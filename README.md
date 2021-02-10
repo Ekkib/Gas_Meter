@@ -1,4 +1,4 @@
-# Gas_Meter
+# Gas Meter
 
 
 Dieses Programm läuft parallel zu einem Gaszähler. Der Zählerstand wird per Reed-Kontakt erfasst.
