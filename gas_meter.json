@@ -1,0 +1,1762 @@
+[
+    {
+        "id": "559a98ba.60a488",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "5789bac0.70b3c4",
+        "type": "rpi-gpio in",
+        "z": "559a98ba.60a488",
+        "name": "Reedkontakt",
+        "pin": "7",
+        "intype": "tri",
+        "debounce": "100",
+        "read": false,
+        "x": 150,
+        "y": 580,
+        "wires": [
+            [
+                "94892c1d.8b06e"
+            ]
+        ]
+    },
+    {
+        "id": "cd8f139f.6ad1f",
+        "type": "file",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "filename": "zaehler.txt",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 530,
+        "y": 420,
+        "wires": [
+            [
+                "cf31072c.9ef708",
+                "f74dd19f.a1f66"
+            ]
+        ]
+    },
+    {
+        "id": "94892c1d.8b06e",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Gaszaehler",
+        "func": "// Gaszaehler  2020-02-04\n\nvar now = new Date() ;\n\n   global.set ('gX_zeit', 0 )  ;\n\n   Reed = msg.payload ;\n   global.set ('gReed', Reed )  ;\n\n   Dividend = 10400000 ; // 104 Sekunden = 100 %\n   if (global.get('gDebug_status')){ Dividend = Dividend / 28 }\n\n   if (Reed == 1) {  \n     global.set ('gGaszaehler', (global.get('gGaszaehler') + 1)) ;\n     global.set ('gPulslaenge', \n                   Date.now() - global.get('gUp_flanke') ) ;\n     global.set ('gLeistung', \n        Math.trunc (Dividend / global.get ('gPulslaenge')) ) ;\n   }\n  \n  \n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getUTCFullYear()+'-'\n    + pad(d.getUTCMonth()+1) +'-'\n    + pad(d.getUTCDate())    +' '\n    + pad(d.getUTCHours())   +':'\n    + pad(d.getUTCMinutes()) +':'\n    + pad(d.getUTCSeconds())\n}\n\n// now.toLocaleString() \n\n  msg.payload  =   ISODateString (now)\n      + \", \" +     (global.get(\"gGaszaehler\") / 10 ) \n      + \", \" +     Reed      \n //   + \", \" +     ((Date.now()-global.get('gUp_flanke'))/1000)      \n //   + \", \" +     ((Date.now()-global.get('gDn_flanke'))/1000)      \n      + \", \" +     (global.get ('gPulslaenge') / 1000)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n  \n   if (Reed == 1) { global.set ('gUp_flanke', Date.now() ) ; } \n   else           { global.set ('gDn_flanke', Date.now() ) ; } \n\n   global.set ('gX_flanke', Date.now() ) ; \n   msg.topic = \"\" ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 330,
+        "y": 420,
+        "wires": [
+            [
+                "cd8f139f.6ad1f",
+                "7c8820eb.f7b07",
+                "a641b296.29084"
+            ]
+        ]
+    },
+    {
+        "id": "cf31072c.9ef708",
+        "type": "ui_text",
+        "z": "559a98ba.60a488",
+        "group": "ba8e00a6.e48ab",
+        "order": 14,
+        "width": 0,
+        "height": 0,
+        "name": "gas",
+        "label": "Log",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 710,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "933d4d91.77594",
+        "type": "ui_button",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "ba8e00a6.e48ab",
+        "order": 6,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "label": "Reed-An",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "1",
+        "payloadType": "num",
+        "topic": "",
+        "x": 140,
+        "y": 460,
+        "wires": [
+            [
+                "94892c1d.8b06e"
+            ]
+        ]
+    },
+    {
+        "id": "9a0f758c.6c12a8",
+        "type": "ui_button",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "ba8e00a6.e48ab",
+        "order": 7,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "label": "Reed-Aus",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "0",
+        "payloadType": "num",
+        "topic": "",
+        "x": 140,
+        "y": 420,
+        "wires": [
+            [
+                "94892c1d.8b06e"
+            ]
+        ]
+    },
+    {
+        "id": "7c8820eb.f7b07",
+        "type": "switch",
+        "z": "559a98ba.60a488",
+        "name": "Steigende_Flanke",
+        "property": "gReed",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 430,
+        "y": 520,
+        "wires": [
+            [
+                "208d618c.f401fe",
+                "5d2f5fad.6ea5b"
+            ]
+        ]
+    },
+    {
+        "id": "208d618c.f401fe",
+        "type": "file",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "filename": "zaehler1.txt",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 590,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b3ac43df.9ead2",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "TickTack",
+        "func": "// TickTack zieht äquidistante Daten, 2020-01-30\n\nvar now = new Date();\n\n  msg.payload =  now.toLocaleString()\n    + \", \" +    (global.get ('gGaszaehler') / 10)\n    + \", \" +     global.get ('gLeistung')  \n    + \", \" +    (global.get ('gX_zeit') / 1000 )\n                ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 180,
+        "y": 1040,
+        "wires": [
+            [
+                "38e6b358.56cabc"
+            ]
+        ]
+    },
+    {
+        "id": "38e6b358.56cabc",
+        "type": "ui_text",
+        "z": "559a98ba.60a488",
+        "group": "ba8e00a6.e48ab",
+        "order": 15,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "tick",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 370,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "5d2f5fad.6ea5b",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Leistung",
+        "func": "msg.payload = global.get('gLeistung') ;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 460,
+        "y": 600,
+        "wires": [
+            [
+                "c05e105b.55dd",
+                "7cd4ecc0.a4ed64",
+                "9c9285f3.1a2568",
+                "9bc45d85.60248",
+                "5f07f114.0984d",
+                "58005a7d.94bb24",
+                "c8a30219.f2fd2"
+            ]
+        ]
+    },
+    {
+        "id": "9c9285f3.1a2568",
+        "type": "ui_gauge",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "ba8e00a6.e48ab",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Leistung",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "100",
+        "seg2": "101",
+        "x": 660,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "8757328e.4db92",
+        "type": "inject",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 60,
+        "wires": [
+            [
+                "8482028.12ed1"
+            ]
+        ]
+    },
+    {
+        "id": "8482028.12ed1",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "init",
+        "func": "// Init, 2021-02-08\n\nglobal.set ('gGaszaehler', 40215 ) ; // am 2021-01-31\nglobal.set ('gGas_24',     40215 ) ;\nglobal.set ('gAbstand',    0 ) ;\nglobal.set ('gX_zeit',     0 ) ;\nglobal.set ('gReed',       0 ) ;\nglobal.set ('gLeistung',  60 ) ;\n\nglobal.set ('gDebug_status',  false ) ;\nglobal.set ('gGenerator',     0     ) ;\n\nglobal.set ('gSchwellenwert', 600000 ) ; \n\nglobal.set ('gX_flanke',  msg.payload ) ; \nglobal.set ('gUp_flanke', msg.payload ) ;\nglobal.set ('gDn_flanke', msg.payload ) ;\n\nglobal.set (\"gPulslaenge\", 150000) ; // 150 Sekunden\n\n// msg.payload = Date.now() ;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 270,
+        "y": 60,
+        "wires": [
+            [
+                "6fb394b2.6f1d0c"
+            ]
+        ]
+    },
+    {
+        "id": "a8928a4f.732c48",
+        "type": "switch",
+        "z": "559a98ba.60a488",
+        "name": "Schwelle_ueberschritten",
+        "property": "gX_zeit",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "gSchwellenwert",
+                "vt": "global"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 660,
+        "wires": [
+            [
+                "5d2f5fad.6ea5b"
+            ]
+        ]
+    },
+    {
+        "id": "12ea544.e7902ac",
+        "type": "ui_switch",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "label": "Debug",
+        "tooltip": "",
+        "group": "ba8e00a6.e48ab",
+        "order": 8,
+        "width": 2,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 130,
+        "y": 1280,
+        "wires": [
+            [
+                "46061be0.2eb9f4"
+            ]
+        ]
+    },
+    {
+        "id": "46061be0.2eb9f4",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "global.set ('gDebug_status', msg.payload) ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 320,
+        "y": 1280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ecb8e757.343ba8",
+        "type": "inject",
+        "z": "559a98ba.60a488",
+        "name": "23:59",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "59 23 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 320,
+        "wires": [
+            [
+                "66b278bb.5f9f48",
+                "214b0dcd.942eb2"
+            ]
+        ]
+    },
+    {
+        "id": "8dc5944f.68b5a8",
+        "type": "file",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "filename": "m3protag.txt",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 730,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "910197e1.68a728",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "per24h",
+        "func": "// per24h\nvar now = new Date() ;\n\n  msg.payload = now.toLocaleString()  + \", \" + \n    (global.get ('gGaszaehler') / 10) + \", \" + \n  ( (global.get ('gGaszaehler') - global.get('gGas_24'))/10) ;\n  \n  global.set ('gGas_24', global.get ('gGaszaehler') ) ;\n  \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 560,
+        "y": 320,
+        "wires": [
+            [
+                "8dc5944f.68b5a8"
+            ]
+        ]
+    },
+    {
+        "id": "7cd4ecc0.a4ed64",
+        "type": "ui_chart",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "47cd2844.1a1288",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "48 h",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "48",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "x": 650,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c05e105b.55dd",
+        "type": "ui_chart",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "47cd2844.1a1288",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "2 h",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "2",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "x": 650,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5328a7df.f0e1b8",
+        "type": "ui_slider",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "label": "Simulation",
+        "tooltip": "",
+        "group": "ba8e00a6.e48ab",
+        "order": 13,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "all",
+        "topic": "",
+        "min": 0,
+        "max": "3",
+        "step": 1,
+        "x": 150,
+        "y": 1220,
+        "wires": [
+            [
+                "85345fb3.eab25"
+            ]
+        ]
+    },
+    {
+        "id": "d834f896.abd878",
+        "type": "inject",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "25",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "25",
+        "payloadType": "num",
+        "x": 130,
+        "y": 1100,
+        "wires": [
+            [
+                "84b77a1f.d20a58"
+            ]
+        ]
+    },
+    {
+        "id": "84b77a1f.d20a58",
+        "type": "switch",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "property": "gGenerator",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 290,
+        "y": 1100,
+        "wires": [
+            [
+                "1a7c6e38.e41a82"
+            ]
+        ]
+    },
+    {
+        "id": "85345fb3.eab25",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "  global.set ('gGenerator', msg.payload ) ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 320,
+        "y": 1220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1a7c6e38.e41a82",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "   msg.payload = 1 ;\n   \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 440,
+        "y": 1100,
+        "wires": [
+            [
+                "94892c1d.8b06e"
+            ]
+        ]
+    },
+    {
+        "id": "b9af424e.14c99",
+        "type": "inject",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "9",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "9",
+        "payloadType": "num",
+        "x": 130,
+        "y": 1140,
+        "wires": [
+            [
+                "6d32cd9e.562d74"
+            ]
+        ]
+    },
+    {
+        "id": "6d32cd9e.562d74",
+        "type": "switch",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "property": "gGenerator",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 290,
+        "y": 1140,
+        "wires": [
+            [
+                "1a7c6e38.e41a82"
+            ]
+        ]
+    },
+    {
+        "id": "5c199111.accf9",
+        "type": "inject",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "5",
+        "payloadType": "num",
+        "x": 130,
+        "y": 1180,
+        "wires": [
+            [
+                "b0bff103.78aa2"
+            ]
+        ]
+    },
+    {
+        "id": "b0bff103.78aa2",
+        "type": "switch",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "property": "gGenerator",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "3",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 290,
+        "y": 1180,
+        "wires": [
+            [
+                "1a7c6e38.e41a82"
+            ]
+        ]
+    },
+    {
+        "id": "a641b296.29084",
+        "type": "ui_button",
+        "z": "559a98ba.60a488",
+        "name": "Blink",
+        "group": "ba8e00a6.e48ab",
+        "order": 12,
+        "width": 3,
+        "height": 1,
+        "passthru": true,
+        "label": "Blink",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "1",
+        "payloadType": "num",
+        "topic": "",
+        "x": 130,
+        "y": 840,
+        "wires": [
+            [
+                "af081f74.3da74",
+                "63889c0b.97dec4"
+            ]
+        ]
+    },
+    {
+        "id": "af081f74.3da74",
+        "type": "delay",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "100",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 400,
+        "y": 880,
+        "wires": [
+            [
+                "a0ddea15.af6388",
+                "c9fd0381.9f58d"
+            ]
+        ]
+    },
+    {
+        "id": "c9fd0381.9f58d",
+        "type": "delay",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "100",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 400,
+        "y": 940,
+        "wires": [
+            [
+                "88501e96.81c1f",
+                "63889c0b.97dec4"
+            ]
+        ]
+    },
+    {
+        "id": "63889c0b.97dec4",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "1",
+        "func": "  msg.payload = 1 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 650,
+        "y": 840,
+        "wires": [
+            [
+                "26889c62.5e6c94"
+            ]
+        ]
+    },
+    {
+        "id": "a0ddea15.af6388",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "0",
+        "func": "  msg.payload = 0 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 650,
+        "y": 1000,
+        "wires": [
+            [
+                "26889c62.5e6c94"
+            ]
+        ]
+    },
+    {
+        "id": "88501e96.81c1f",
+        "type": "delay",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "300",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 400,
+        "y": 1000,
+        "wires": [
+            [
+                "a0ddea15.af6388"
+            ]
+        ]
+    },
+    {
+        "id": "9e1af36d.900c2",
+        "type": "inject",
+        "z": "559a98ba.60a488",
+        "name": "10 Sekunden",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 940,
+        "wires": [
+            [
+                "c9fd0381.9f58d",
+                "9f09e4d4.f727f8",
+                "b3ac43df.9ead2"
+            ]
+        ]
+    },
+    {
+        "id": "26889c62.5e6c94",
+        "type": "rpi-gpio out",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "pin": "13",
+        "set": "",
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 660,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "d3ca1ad6.dc8918",
+        "type": "comment",
+        "z": "559a98ba.60a488",
+        "name": "Gas_Meter 2021-02-10 - e@pofahl.de",
+        "info": "Dieses Programm läuft parallel zu einem Gaszähler. Der Zählerstand wird per Reed-Kontakt erfasst.\n\nKeeps track of the gas meter reading by using a reed-contact.\n\n\nEkkehard@Pofahl.de",
+        "x": 370,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "9f09e4d4.f727f8",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Watchdog",
+        "func": "// Watchdog  2020-02-08\nvar now = new Date() ;\n\n  X_zeit = Date.now() - global.get ('gX_flanke') ;\n  global.set ('gX_zeit', X_zeit)  ;\n\n  Schwellenwert = 12 * 60 * 1000 ; // 12 Minuten\n  if (global.get('gDebug_status')) \n                         {Schwellenwert = 2 * 60 * 1000 ;} \n               \n  global.set ('gSchwellenwert', Schwellenwert)   ;         \n  \n  if ( X_zeit > Schwellenwert) {global.set ('gLeistung', 0); }\n\n//  let options = { weekday: 'numeric', year: 'numeric', \n//    month: 'numeric', day: 'numeric' };\n\n// console.log(date.toLocaleString('de-DE', options));\n\n//   msg.payload =    now.toLocaleString () ;\n  \n//  Intl.DateTimeFormat(undefined, {\n//  year: 'numeric',\n//  month: 'numeric',\n//  day: 'numeric',\n//  hour: 'numeric',\n//  minute: 'numeric',\n//  second: 'numeric'\n//  }).format(d)\n \n \n// function pad(n){return n<10 ? '0'+n : n}\n\n\n/* use a function for the exact format desired... */\nfunction ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getUTCFullYear()+'-'\n    + pad(d.getUTCMonth()+1) +'-'\n    + pad(d.getUTCDate())    +' '\n    + pad(d.getUTCHours())   +':'\n    + pad(d.getUTCMinutes()) +':'\n    + pad(d.getUTCSeconds())\n}\n\n// var d = new Date();\n// console.log(ISODateString(d));\n\n  msg.payload = ISODateString (now) ;\n\n//  msg.payload =    now.toLocaleString () ;\n\n \n  \n  \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 370,
+        "y": 760,
+        "wires": [
+            [
+                "a8928a4f.732c48",
+                "4d77818e.12d09"
+            ]
+        ]
+    },
+    {
+        "id": "14ce04b1.06ebdb",
+        "type": "ui_text_input",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "group": "ba8e00a6.e48ab",
+        "order": 9,
+        "width": 3,
+        "height": 1,
+        "passthru": true,
+        "mode": "number",
+        "delay": "2000",
+        "topic": "",
+        "x": 310,
+        "y": 140,
+        "wires": [
+            [
+                "991d850e.388738"
+            ]
+        ]
+    },
+    {
+        "id": "4d77818e.12d09",
+        "type": "ui_text",
+        "z": "559a98ba.60a488",
+        "group": "ba8e00a6.e48ab",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Lokale Zeit",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 610,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "9bc45d85.60248",
+        "type": "ui_chart",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "47cd2844.1a1288",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "120 h",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "dd HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "100",
+        "removeOlder": "120",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "x": 650,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5f07f114.0984d",
+        "type": "ui_chart",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "ac933fde.66c148",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "iPad6h",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "6",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "x": 660,
+        "y": 740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9a7afabd.d7edb8",
+        "type": "ui_button",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "4686be15.d635d",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "iPhone",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "1",
+        "payloadType": "num",
+        "topic": "",
+        "x": 130,
+        "y": 500,
+        "wires": [
+            [
+                "94892c1d.8b06e"
+            ]
+        ]
+    },
+    {
+        "id": "a60cdc7d.e927b",
+        "type": "ui_button",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "ac933fde.66c148",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "iPad",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "1",
+        "payloadType": "num",
+        "topic": "",
+        "x": 130,
+        "y": 540,
+        "wires": [
+            [
+                "94892c1d.8b06e"
+            ]
+        ]
+    },
+    {
+        "id": "58005a7d.94bb24",
+        "type": "ui_chart",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "4686be15.d635d",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "iPhone1h",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "x": 660,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "37487193.51c88e",
+        "type": "file in",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "filename": "count.txt",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "utf8",
+        "x": 700,
+        "y": 60,
+        "wires": [
+            [
+                "a2ccc897.8d1d88"
+            ]
+        ]
+    },
+    {
+        "id": "1496df.b9009921",
+        "type": "file",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "filename": "count.txt",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "utf8",
+        "x": 700,
+        "y": 120,
+        "wires": [
+            [
+                "305c0306.e903cc"
+            ]
+        ]
+    },
+    {
+        "id": "6fb394b2.6f1d0c",
+        "type": "ui_button",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "ba8e00a6.e48ab",
+        "order": 11,
+        "width": 3,
+        "height": 1,
+        "passthru": true,
+        "label": "Laden",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "0",
+        "payloadType": "num",
+        "topic": "",
+        "x": 390,
+        "y": 60,
+        "wires": [
+            [
+                "7046cc40.53ac64"
+            ]
+        ]
+    },
+    {
+        "id": "7046cc40.53ac64",
+        "type": "delay",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 540,
+        "y": 60,
+        "wires": [
+            [
+                "37487193.51c88e"
+            ]
+        ]
+    },
+    {
+        "id": "991d850e.388738",
+        "type": "delay",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 540,
+        "y": 120,
+        "wires": [
+            [
+                "1496df.b9009921"
+            ]
+        ]
+    },
+    {
+        "id": "a2ccc897.8d1d88",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Gewirxel",
+        "func": "\n   puffer = msg.payload ;\n   msg.payload = Math.trunc (puffer) ;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 160,
+        "y": 120,
+        "wires": [
+            [
+                "991d850e.388738"
+            ]
+        ]
+    },
+    {
+        "id": "66b278bb.5f9f48",
+        "type": "ui_button",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "ba8e00a6.e48ab",
+        "order": 10,
+        "width": 3,
+        "height": 1,
+        "passthru": true,
+        "label": "speichern",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "x": 440,
+        "y": 260,
+        "wires": [
+            [
+                "8dd6ccb.427de3"
+            ]
+        ]
+    },
+    {
+        "id": "c8a30219.f2fd2",
+        "type": "ui_chart",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "4686be15.d635d",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "iPhone120h",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "120",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "x": 670,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "24e9359.bd2eeca",
+        "type": "ui_button",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "ba8e00a6.e48ab",
+        "order": 4,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "label": "+ 0.1",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "x": 130,
+        "y": 220,
+        "wires": [
+            [
+                "a9ca5d96.71ab6"
+            ]
+        ]
+    },
+    {
+        "id": "60894555.68d97c",
+        "type": "ui_button",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "ba8e00a6.e48ab",
+        "order": 2,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "label": "- 0.1",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "x": 130,
+        "y": 260,
+        "wires": [
+            [
+                "d6756e3e.95af7"
+            ]
+        ]
+    },
+    {
+        "id": "a9ca5d96.71ab6",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "  global.set ('gGaszaehler', (global.get('gGaszaehler') + 1)) ;\n  \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 260,
+        "y": 220,
+        "wires": [
+            [
+                "66b278bb.5f9f48"
+            ]
+        ]
+    },
+    {
+        "id": "d6756e3e.95af7",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "   global.set (\"gGaszaehler\", (global.get(\"gGaszaehler\") - 1)) ;\n   \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 260,
+        "y": 260,
+        "wires": [
+            [
+                "66b278bb.5f9f48"
+            ]
+        ]
+    },
+    {
+        "id": "bb8d9988.a99df8",
+        "type": "ui_text",
+        "z": "559a98ba.60a488",
+        "group": "ba8e00a6.e48ab",
+        "order": 3,
+        "width": 2,
+        "height": 1,
+        "name": "",
+        "label": "Gaszaehler",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 710,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "8dd6ccb.427de3",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "     msg.payload = global.get(\"gGaszaehler\");\n     \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 440,
+        "y": 180,
+        "wires": [
+            [
+                "14ce04b1.06ebdb"
+            ]
+        ]
+    },
+    {
+        "id": "305c0306.e903cc",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Setze gGaszaehler",
+        "func": "   global.set ('gGaszaehler', msg.payload ) ;\n   global.set ('gGas_24',     msg.payload ) ;\n   \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 670,
+        "y": 180,
+        "wires": [
+            [
+                "f74dd19f.a1f66"
+            ]
+        ]
+    },
+    {
+        "id": "f74dd19f.a1f66",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Lese gGaszaehler",
+        "func": "   msg.payload = global.get('gGaszaehler') / 10 ;\n   \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 670,
+        "y": 240,
+        "wires": [
+            [
+                "bb8d9988.a99df8"
+            ]
+        ]
+    },
+    {
+        "id": "214b0dcd.942eb2",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Tagesverbrauch",
+        "func": "msg.payload = global.get('gGaszaehler') - global.get('gGas_24');\n   \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 360,
+        "y": 320,
+        "wires": [
+            [
+                "910197e1.68a728",
+                "a9c4c2ab.04995"
+            ]
+        ]
+    },
+    {
+        "id": "ddd89e17.de79f",
+        "type": "ui_chart",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "3a86132b.eccf7c",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "Tagesverbrauch",
+        "chartType": "bar",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "x": 680,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a9c4c2ab.04995",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "Tagesnr = new Date () ;\n\n   msg.topic = Tagesnr.getDate() ; \n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 510,
+        "y": 360,
+        "wires": [
+            [
+                "ddd89e17.de79f"
+            ]
+        ]
+    },
+    {
+        "id": "184fded9.8f20a1",
+        "type": "inject",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 480,
+        "y": 1160,
+        "wires": [
+            [
+                "94a5044a.c7dce8"
+            ]
+        ]
+    },
+    {
+        "id": "94a5044a.c7dce8",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "Tagesnr = new Date () ;\n\n   msg.payload = Tagesnr.getDate() ;\n   \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 620,
+        "y": 1160,
+        "wires": [
+            [
+                "a792b457.48be68"
+            ]
+        ]
+    },
+    {
+        "id": "a792b457.48be68",
+        "type": "debug",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "ba8e00a6.e48ab",
+        "type": "ui_group",
+        "name": "gHome",
+        "tab": "171e8c97.da0913",
+        "order": 1,
+        "disp": false,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "47cd2844.1a1288",
+        "type": "ui_group",
+        "name": "Graf",
+        "tab": "f061537.3e6acb",
+        "order": 1,
+        "disp": false,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "ac933fde.66c148",
+        "type": "ui_group",
+        "name": "iPadGrp",
+        "tab": "6419fa5c.b1f80c",
+        "order": 1,
+        "disp": false,
+        "width": "13",
+        "collapse": false
+    },
+    {
+        "id": "4686be15.d635d",
+        "type": "ui_group",
+        "name": "iPhnGruppe",
+        "tab": "391b3a9e.561c46",
+        "order": 1,
+        "disp": false,
+        "width": "7",
+        "collapse": false
+    },
+    {
+        "id": "3a86132b.eccf7c",
+        "type": "ui_group",
+        "name": "EGruppe",
+        "tab": "3ff7a896.491d28",
+        "order": 1,
+        "disp": false,
+        "width": "7",
+        "collapse": false
+    },
+    {
+        "id": "171e8c97.da0913",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "f061537.3e6acb",
+        "type": "ui_tab",
+        "name": "Bilder",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "6419fa5c.b1f80c",
+        "type": "ui_tab",
+        "name": "iPad",
+        "icon": "dashboard",
+        "order": 4,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "391b3a9e.561c46",
+        "type": "ui_tab",
+        "name": "iPhone",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "3ff7a896.491d28",
+        "type": "ui_tab",
+        "name": "Energie",
+        "icon": "dashboard",
+        "order": 5,
+        "disabled": false,
+        "hidden": false
+    }
+]
