@@ -1,6 +1,6 @@
 # Gas Meter
 
-Dieses Programm läuft parallel zu einem Gaszähler auf einem Raspi. Der Zählerstand wird per Reed-Kontakt erfasst.
+Dieses Programm läuft parallel zu einem Gaszähler auf einem Raspi. Der Zählerstand wird per Reed-Kontakt erfasst. Das Programm ist mit node-RED erstellt und benutzt die Erweiterung "Dashboard".
 
 Keeps track of the gas meter reading by using a reed-contact.
 
