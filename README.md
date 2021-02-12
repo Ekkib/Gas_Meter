@@ -8,8 +8,8 @@ Kurze Beschreibung der einfachen externen Beschaltung :
 
 Die Nummer der Pins des Raspi I/O Pfostensteckers in Klammern :
 
-+3,3 Volt (1, rot)---xReedx---I>LED>I---+---I 1KOhm I---Ground (9, schwarz)
-GPIO04 Pin (7, gelb)------I 1KOhm I-----+
++3,3 Volt (1, rot)---xReedx---I>LED>I---+---I 1KOhm I---Ground (9, schwarz)   
+GPIO04 Pin (7, gelb)------I 1KOhm I-----+  
 (als Eingang geschaltet )
 
 Die LED geht an, sobald der Reed-Kontakt schaltet. Über einen 1 KOhm Widerstand geht das Signal an den Pin GPIO04 (Pin 7) des Raspi.
