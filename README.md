@@ -14,7 +14,7 @@ GPIO04 Pin (7, gelb)------I 1KOhm I-----+
 
 Die LED geht an, sobald der Reed-Kontakt schaltet. Über einen 1 KOhm Widerstand geht das Signal an den Pin GPIO04 (Pin 7) des Raspi.
 
-Ein anderer freier I/O Pin (Pin 13) treibt als Ausgang eine LED, siehe unten. Diese LED blinkt im 10 Sekunden-Takt ("Heart-Beat") und bei jedem Signalwechsel des Reedkontaktes.
+Ein anderer freier I/O Pin (Pin 13) treibt als Ausgang über einen 1 KOhm Widerstand eine LED. Diese LED blinkt im 10 Sekunden-Takt ("Heart-Beat") und bei jedem Signalwechsel des Reedkontaktes.
 
 https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler
 
