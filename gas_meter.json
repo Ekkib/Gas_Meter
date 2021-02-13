@@ -47,7 +47,7 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "Gaszaehler",
-        "func": "// Gaszaehler  2020-02-04\n\nvar now = new Date() ;\n\n   global.set ('gX_zeit', 0 )  ;\n\n   Reed = msg.payload ;\n   global.set ('gReed', Reed )  ;\n\n   Dividend = 10400000 ; // 104 Sekunden = 100 %\n   if (global.get('gDebug_status')){ Dividend = Dividend / 28 }\n\n   if (Reed == 1) {  \n     global.set ('gGaszaehler', (global.get('gGaszaehler') + 1)) ;\n     global.set ('gPulslaenge', \n                   Date.now() - global.get('gUp_flanke') ) ;\n     global.set ('gLeistung', \n        Math.trunc (Dividend / global.get ('gPulslaenge')) ) ;\n   }\n  \n  \n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getUTCFullYear()+'-'\n    + pad(d.getUTCMonth()+1) +'-'\n    + pad(d.getUTCDate())    +' '\n    + pad(d.getUTCHours())   +':'\n    + pad(d.getUTCMinutes()) +':'\n    + pad(d.getUTCSeconds())\n}\n\n// now.toLocaleString() \n\n  msg.payload  =   ISODateString (now)\n//      + \", \" +     (global.get(\"gGaszaehler\") / 10 ) \n      + \", \" +     Number.parseFloat\n                  ((global.get('gGaszaehler')/10)).toFixed(1) \n      + \", \" +     Reed      \n //   + \", \" +     ((Date.now()-global.get('gUp_flanke'))/1000)      \n //   + \", \" +     ((Date.now()-global.get('gDn_flanke'))/1000)      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n  \n   if (Reed == 1) { global.set ('gUp_flanke', Date.now() ) ; } \n   else           { global.set ('gDn_flanke', Date.now() ) ; } \n\n   global.set ('gX_flanke', Date.now() ) ; \n   msg.topic = \"\" ;\nreturn msg;",
+        "func": "// Gaszaehler  2020-02-13\n\nvar now = new Date() ;\n\n   global.set ('gX_zeit', 0 ) ; // Heart-beat\n\n   Reed = msg.payload ;\n   global.set ('gReed', Reed )  ;\n\n   Dividend = 10400000 ; // 104 Sekunden = 100 %\n   if (global.get('gDebug_status')){ Dividend = Dividend / 28 }\n\n   if (Reed == 1) {  \n     global.set ('gGaszaehler', (global.get('gGaszaehler') + 1)) ;\n     global.set ('gPulslaenge', \n                   Date.now() - global.get('gUp_flanke') ) ;\n     global.set ('gLeistung', \n        Math.trunc (Dividend / global.get ('gPulslaenge')) ) ;\n   }\n  \n  \n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getUTCFullYear()+'-'\n    + pad(d.getUTCMonth()+1) +'-'\n    + pad(d.getUTCDate())    +' '\n    + pad(d.getUTCHours())   +':'\n    + pad(d.getUTCMinutes()) +':'\n    + pad(d.getUTCSeconds())\n}\n\n// now.toLocaleString() \n\n  msg.payload  =   ISODateString (now)\n//      + \", \" +     (global.get(\"gGaszaehler\") / 10 ) \n      + \", \" +     Number.parseFloat\n                  ((global.get('gGaszaehler')/10)).toFixed(1) \n      + \", \" +     Reed      \n //   + \", \" +     ((Date.now()-global.get('gUp_flanke'))/1000)      \n //   + \", \" +     ((Date.now()-global.get('gDn_flanke'))/1000)      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n  \n   if (Reed == 1) { global.set ('gUp_flanke', Date.now() ) ; } \n   else           { global.set ('gDn_flanke', Date.now() ) ; } \n\n   global.set ('gX_flanke', Date.now() ) ; \n   msg.topic = \"\" ;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -607,7 +607,7 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "",
-        "func": "  global.set ('gGenerator', msg.payload ) ;\nreturn msg;",
+        "func": "  global.set ('gGenerator', msg.payload ) ;\n  global.set ('gDebug_status', true ) ;\n  \n  msg.payload = true ;\n  \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -615,7 +615,9 @@
         "x": 320,
         "y": 1220,
         "wires": [
-            []
+            [
+                "12ea544.e7902ac"
+            ]
         ]
     },
     {
@@ -927,7 +929,7 @@
         "id": "d3ca1ad6.dc8918",
         "type": "comment",
         "z": "559a98ba.60a488",
-        "name": "Gas_Meter 2021-02-12 - e@pofahl.de",
+        "name": "Gas_Meter 2021-02-13 - e@pofahl.de",
         "info": "Dieses Programm laeuft parallel zu einem Gaszaehler. Der Zaehlerstand wird per Reed-Kontakt erfasst.\n\nKeeps track of the gas meter reading by using a reed-contact.\n\n\nEkkehard@Pofahl.de",
         "x": 370,
         "y": 20,
