@@ -16,6 +16,14 @@ Die LED geht an, sobald der Reed-Kontakt schaltet. Über einen 1 KOhm Widerstand
 
 Ein anderer freier I/O Pin (Pin 13) treibt als Ausgang über einen 1 KOhm Widerstand eine LED. Diese LED blinkt im 10 Sekunden-Takt ("Heart-Beat") und bei jedem Signalwechsel des Reedkontaktes.
 
+Mehr Infos und Fotos :
+
 https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler
+
+Heir sind moegliche Erweiterungen gelistet :
+
+https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler/gas_pl%C3%A4ne
+
+Wer immer diese Erweiterungen schon vorgenommen, bevor ich sie einbauen konnte : Ich übernehme sie gerne.
 
 Ekkehard@Pofahl.de
