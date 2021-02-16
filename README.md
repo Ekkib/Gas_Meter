@@ -26,4 +26,22 @@ https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler/gas_pl%C3%A
 
 Wer immer diese Erweiterungen schon vorgenommen, bevor ich sie einbauen konnte : Ich übernehme sie gerne.
 
+Zukunft :
+
+* Diagramme weiter optimieren.
+* Dividend und andere Konstante optional per Einlesen aus Datei, äquivalent zur Ini Datei, und änderbar über die /ui. So, wie das jetzt schon mit dem Zählerstand passiert.
+* Programm fit machen, um die Werte per WEB abzuholen. Per Homeassistant und dergleichen.
+* Beim Start den letzten Zählerstand aus Protokolldatei lesen.
+* Diagramm-Breiten besser an iPhone und iPad anpassen.
+* Datei mit äquidistanten Messwerten wahlweise, Aufzeichnungsstop nach 20 Minuten Leerlauf.
+* Schönen Schaltplan auf die Webseite bringen.
+* Git auch lokal benutzen : https://nodered.org/docs/user-guide/projects/
+* Mqqt ?
+* Lorawan ?
+* Welche Auswerte Software ?
+* Ausprobieren : Uni- and Bipolar Hall IC Switches for Magnetic Field Applications, als Alternative zu einem Reedkontakt :TLE4905L, TLE4935L, TLE4945L, TLE4945-2L.
+* Magnetsensor mit I2C Interface ?
+
+
+
 Ekkehard@Pofahl.de
