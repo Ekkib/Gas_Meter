@@ -16,7 +16,7 @@
         "debounce": "100",
         "read": false,
         "x": 150,
-        "y": 580,
+        "y": 500,
         "wires": [
             [
                 "94892c1d.8b06e"
@@ -47,7 +47,7 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "Gaszaehler",
-        "func": "// Gaszaehler  2020-02-13\n\nvar now = new Date() ;\n\n   global.set ('gX_zeit', 0 ) ; // Heart-beat\n\n   Reed = msg.payload ;\n   global.set ('gReed', Reed )  ;\n\n   Dividend = 10400000 ; // 104 Sekunden = 100 %\n   if (global.get('gDebug_status')){ Dividend = Dividend / 28 }\n\n   if (Reed == 1) {  \n     global.set ('gGaszaehler', (global.get('gGaszaehler') + 1)) ;\n     global.set ('gPulslaenge', \n                   Date.now() - global.get('gUp_flanke') ) ;\n     global.set ('gLeistung', \n        Math.trunc (Dividend / global.get ('gPulslaenge')) ) ;\n   }\n  \n  \n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getUTCFullYear()+'-'\n    + pad(d.getUTCMonth()+1) +'-'\n    + pad(d.getUTCDate())    +' '\n    + pad(d.getUTCHours())   +':'\n    + pad(d.getUTCMinutes()) +':'\n    + pad(d.getUTCSeconds())\n}\n\n// now.toLocaleString() \n\n  msg.payload  =   ISODateString (now)\n//      + \", \" +     (global.get(\"gGaszaehler\") / 10 ) \n      + \", \" +     Number.parseFloat\n                  ((global.get('gGaszaehler')/10)).toFixed(1) \n      + \", \" +     Reed      \n //   + \", \" +     ((Date.now()-global.get('gUp_flanke'))/1000)      \n //   + \", \" +     ((Date.now()-global.get('gDn_flanke'))/1000)      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n  \n   if (Reed == 1) { global.set ('gUp_flanke', Date.now() ) ; } \n   else           { global.set ('gDn_flanke', Date.now() ) ; } \n\n   global.set ('gX_flanke', Date.now() ) ; \n   msg.topic = \"\" ;\nreturn msg;",
+        "func": "// Gaszaehler  2020-02-13\n\nvar now = new Date() ;\n\n   global.set ('gX_zeit', 0 ) ; // Heart-beat\n\n   Reed = msg.payload ;\n   global.set ('gReed', Reed )  ;\n\n   Dividend = 10400000 ; // 104 Sekunden = 100 %\n   if (global.get('gDebug_status')){ Dividend = Dividend / 28 }\n\n   if (Reed == 1) {  \n     global.set ('gGaszaehler', (global.get('gGaszaehler') + 1)) ;\n     global.set ('gPulslaenge', \n                   Date.now() - global.get('gUp_flanke') ) ;\n     global.set ('gLeistung', \n        Math.trunc (Dividend / global.get ('gPulslaenge')) ) ;\n   }\n  \n  \n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n// now.toLocaleString() \n\n  msg.payload  =   ISODateString (now)\n//      + \", \" +     (global.get(\"gGaszaehler\") / 10 ) \n      + \", \" +     Number.parseFloat\n                  ((global.get('gGaszaehler')/10)).toFixed(1) \n      + \", \" +     Reed      \n //   + \", \" +     ((Date.now()-global.get('gUp_flanke'))/1000)      \n //   + \", \" +     ((Date.now()-global.get('gDn_flanke'))/1000)      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n  \n   if (Reed == 1) { global.set ('gUp_flanke', Date.now() ) ; } \n   else           { global.set ('gDn_flanke', Date.now() ) ; } \n\n   global.set ('gX_flanke', Date.now() ) ; \n   msg.topic = \"\" ;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -906,7 +906,6 @@
         "wires": [
             [
                 "c9fd0381.9f58d",
-                "9f09e4d4.f727f8",
                 "b3ac43df.9ead2"
             ]
         ]
@@ -929,7 +928,7 @@
         "id": "d3ca1ad6.dc8918",
         "type": "comment",
         "z": "559a98ba.60a488",
-        "name": "Gas_Meter 2021-02-13 - e@pofahl.de",
+        "name": "Gas_Meter 2021-02-17 - e@pofahl.de",
         "info": "Dieses Programm laeuft parallel zu einem Gaszaehler. Der Zaehlerstand wird per Reed-Kontakt erfasst.\n\nKeeps track of the gas meter reading by using a reed-contact.\n\n\nEkkehard@Pofahl.de",
         "x": 370,
         "y": 20,
@@ -940,13 +939,13 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "Watchdog",
-        "func": "// Watchdog  2020-02-08\nvar now = new Date() ;\n\n  X_zeit = Date.now() - global.get ('gX_flanke') ;\n  global.set ('gX_zeit', X_zeit)  ;\n\n  Schwellenwert = 12 * 60 * 1000 ; // 12 Minuten\n  if (global.get('gDebug_status')) \n                         {Schwellenwert = 2 * 60 * 1000 ;} \n               \n  global.set ('gSchwellenwert', Schwellenwert)   ;         \n  \n  if ( X_zeit > Schwellenwert) {global.set ('gLeistung', 0); }\n\n//  let options = { weekday: 'numeric', year: 'numeric', \n//    month: 'numeric', day: 'numeric' };\n\n// console.log(date.toLocaleString('de-DE', options));\n\n//   msg.payload =    now.toLocaleString () ;\n  \n//  Intl.DateTimeFormat(undefined, {\n//  year: 'numeric',\n//  month: 'numeric',\n//  day: 'numeric',\n//  hour: 'numeric',\n//  minute: 'numeric',\n//  second: 'numeric'\n//  }).format(d)\n \n \n// function pad(n){return n<10 ? '0'+n : n}\n\n\n/* use a function for the exact format desired... */\nfunction ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getUTCFullYear()+'-'\n    + pad(d.getUTCMonth()+1) +'-'\n    + pad(d.getUTCDate())    +' '\n    + pad(d.getUTCHours())   +':'\n    + pad(d.getUTCMinutes()) +':'\n    + pad(d.getUTCSeconds())\n}\n\n// var d = new Date();\n// console.log(ISODateString(d));\n\n  msg.payload = ISODateString (now) ;\n\n//  msg.payload =    now.toLocaleString () ;\n\n \n  \n  \nreturn msg;",
+        "func": "// Watchdog  2020-02-08\nvar now = new Date() ;\n\n  X_zeit = Date.now() - global.get ('gX_flanke') ;\n  global.set ('gX_zeit', X_zeit)  ;\n\n  Schwellenwert = 12 * 60 * 1000 ; // 12 Minuten\n  if (global.get('gDebug_status')) \n                         {Schwellenwert = 2 * 60 * 1000 ;} \n               \n  global.set ('gSchwellenwert', Schwellenwert)   ;         \n  \n  if ( X_zeit > Schwellenwert) {global.set ('gLeistung', 0); }\n\n//  let options = { weekday: 'numeric', year: 'numeric', \n//    month: 'numeric', day: 'numeric' };\n\n// console.log(date.toLocaleString('de-DE', options));\n\n//   msg.payload =    now.toLocaleString () ;\n  \n//  Intl.DateTimeFormat(undefined, {\n//  year: 'numeric',\n//  month: 'numeric',\n//  day: 'numeric',\n//  hour: 'numeric',\n//  minute: 'numeric',\n//  second: 'numeric'\n//  }).format(d)\n \n \n// function pad(n){return n<10 ? '0'+n : n}\n\n\n/* use a function for the exact format desired... */\nfunction ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n// var d = new Date();\n// console.log(ISODateString(d));\n\n  msg.payload = ISODateString (now) ;\n\n//  msg.payload =    now.toLocaleString () ;\n\n \n  \n  \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 370,
-        "y": 760,
+        "x": 450,
+        "y": 720,
         "wires": [
             [
                 "a8928a4f.732c48",
@@ -989,8 +988,8 @@
         "label": "Lokale Zeit",
         "format": "{{msg.payload}}",
         "layout": "col-center",
-        "x": 610,
-        "y": 800,
+        "x": 630,
+        "y": 780,
         "wires": []
     },
     {
@@ -1075,58 +1074,6 @@
         "y": 740,
         "wires": [
             []
-        ]
-    },
-    {
-        "id": "9a7afabd.d7edb8",
-        "type": "ui_button",
-        "z": "559a98ba.60a488",
-        "name": "",
-        "group": "4686be15.d635d",
-        "order": 3,
-        "width": 0,
-        "height": 0,
-        "passthru": false,
-        "label": "iPhone",
-        "tooltip": "",
-        "color": "",
-        "bgcolor": "",
-        "icon": "",
-        "payload": "1",
-        "payloadType": "num",
-        "topic": "",
-        "x": 130,
-        "y": 500,
-        "wires": [
-            [
-                "94892c1d.8b06e"
-            ]
-        ]
-    },
-    {
-        "id": "a60cdc7d.e927b",
-        "type": "ui_button",
-        "z": "559a98ba.60a488",
-        "name": "",
-        "group": "ac933fde.66c148",
-        "order": 2,
-        "width": 0,
-        "height": 0,
-        "passthru": false,
-        "label": "iPad",
-        "tooltip": "",
-        "color": "",
-        "bgcolor": "",
-        "icon": "",
-        "payload": "1",
-        "payloadType": "num",
-        "topic": "",
-        "x": 130,
-        "y": 540,
-        "wires": [
-            [
-                "94892c1d.8b06e"
-            ]
         ]
     },
     {
@@ -1239,7 +1186,7 @@
         "z": "559a98ba.60a488",
         "name": "",
         "pauseType": "delay",
-        "timeout": "2",
+        "timeout": "1",
         "timeoutUnits": "seconds",
         "rate": "1",
         "nbRateUnits": "1",
@@ -1262,7 +1209,7 @@
         "z": "559a98ba.60a488",
         "name": "",
         "pauseType": "delay",
-        "timeout": "2",
+        "timeout": "1",
         "timeoutUnits": "seconds",
         "rate": "1",
         "nbRateUnits": "1",
@@ -1665,6 +1612,35 @@
         "x": 590,
         "y": 1220,
         "wires": []
+    },
+    {
+        "id": "ae736c02.7e377",
+        "type": "inject",
+        "z": "559a98ba.60a488",
+        "name": "5 Sekunden",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 720,
+        "wires": [
+            [
+                "9f09e4d4.f727f8"
+            ]
+        ]
     },
     {
         "id": "ba8e00a6.e48ab",
