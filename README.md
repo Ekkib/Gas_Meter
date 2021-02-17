@@ -1,6 +1,6 @@
 # Gas Meter
 
-Dieses Programm läuft parallel zu einem Gaszähler auf einem Raspi. Der Zählerstand wird per Reed-Kontakt erfasst. Das Programm ist mit node-RED erstellt und benutzt die Erweiterung "Dashboard".
+Dieses Programm laeuft parallel zu einem Gaszaehler auf einem Raspi. Der Zaehlerstand wird per Reed-Kontakt erfasst. Die momentane Leistung wird aus dem zeitlichen Abstand der Zaehlimpulse berechnet. Das Programm ist mit node-RED erstellt und benutzt die Erweiterung "Dashboard".
 
 Keeps track of the gas meter reading by using a reed-contact.
 
@@ -29,7 +29,7 @@ Wer immer diese Erweiterungen schon vorgenommen, bevor ich sie einbauen konnte :
 Zukunft :
 
 1. Diagramme weiter optimieren.
-1. Dividend und andere Konstante optional per Einlesen aus Datei, äquivalent zur Ini Datei, und änderbar über die /ui. So, wie das jetzt schon mit dem Zählerstand passiert.
+1. Dividend und andere Konstante optional per Einlesen aus Datei, äquivalent zur Ini Datei, und aenderbar über die /ui. So, wie das jetzt schon mit dem Zaehlerstand passiert.
 1. Programm fit machen, um die Werte per WEB abzuholen. Per Homeassistant und dergleichen.
 1. Beim Start den letzten Zählerstand aus Protokolldatei lesen.
 1. Die 3 Protokolldateien nur wahlweise schreiben.
