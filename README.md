@@ -1,6 +1,6 @@
 # Gas Meter
 
-Dieses Programm laeuft parallel zu einem Gaszaehler auf einem Raspi. Der Zaehlerstand wird per Reed-Kontakt erfasst. Die momentane Leistung wird aus dem zeitlichen Abstand der Zaehlimpulse berechnet. Das Programm ist mit node-RED erstellt und benutzt die Erweiterung "Dashboard".
+Dieses Programm laeuft parallel zu einem Gaszaehler auf einem Raspi. Ein Wechsel des Zaehlerstandes wird per Reed-Kontakt erfasst. Die momentane Leistung wird aus dem zeitlichen Abstand der Zaehlimpulse berechnet. Das Programm ist mit node-RED erstellt und benutzt die Erweiterung "Dashboard". Das Programm laeuft auf allen bisher erschienen Raspis.
 
 Keeps track of the gas meter reading and performance by using a reed-contact.
 
@@ -15,6 +15,8 @@ GPIO04 Pin (7, gelb)------I 1KOhm I-----+
 Die LED geht an, sobald der Reed-Kontakt schaltet. Über einen 1 KOhm Widerstand geht das Signal an den Pin GPIO04 (Pin 7) des Raspi.
 
 Ein anderer freier I/O Pin (Pin 13) treibt als Ausgang über einen 1 KOhm Widerstand eine LED. Diese LED blinkt im 10 Sekunden-Takt ("Heart-Beat") und bei jedem Signalwechsel des Reedkontaktes.
+
+Eine Schritt-fuer-Schritt Anleitung zur Installation auf einem Raspi wird auf Anforderung gerne erstellt.
 
 Mehr Infos und Fotos :
 
