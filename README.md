@@ -2,7 +2,7 @@
 
 Dieses Programm laeuft parallel zu einem Gaszaehler auf einem Raspi. Der Zaehlerstand wird per Reed-Kontakt erfasst. Die momentane Leistung wird aus dem zeitlichen Abstand der Zaehlimpulse berechnet. Das Programm ist mit node-RED erstellt und benutzt die Erweiterung "Dashboard".
 
-Keeps track of the gas meter reading by using a reed-contact.
+Keeps track of the gas meter reading and performance by using a reed-contact.
 
 Kurze Beschreibung der einfachen externen Beschaltung :
 
@@ -20,7 +20,7 @@ Mehr Infos und Fotos :
 
 https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler
 
-Heir sind moegliche Erweiterungen gelistet :
+Hier sind moegliche Erweiterungen gelistet :
 
 https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler/gas_pl%C3%A4ne
 
@@ -41,7 +41,7 @@ Zukunft :
 1. Lorawan ?
 1. Welche Auswerte Software ?
 1. Ausprobieren : Uni- and Bipolar Hall IC Switches for Magnetic Field Applications, als Alternative zu einem Reedkontakt :TLE4905L, TLE4935L, TLE4945L, TLE4945-2L.
-1. Magnetsensor mit I2C Interface (QMC5883 magnetometer oder so) ?
+1. Magnetsensor mit I2C Interface (QMC5883 Magnetometer oder so) ?
 
 
 
