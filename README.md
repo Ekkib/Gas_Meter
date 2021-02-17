@@ -28,19 +28,20 @@ Wer immer diese Erweiterungen schon vorgenommen, bevor ich sie einbauen konnte :
 
 Zukunft :
 
-* Diagramme weiter optimieren.
-* Dividend und andere Konstante optional per Einlesen aus Datei, äquivalent zur Ini Datei, und änderbar über die /ui. So, wie das jetzt schon mit dem Zählerstand passiert.
-* Programm fit machen, um die Werte per WEB abzuholen. Per Homeassistant und dergleichen.
-* Beim Start den letzten Zählerstand aus Protokolldatei lesen.
-* Diagramm-Breiten besser an iPhone und iPad anpassen.
-* Datei mit äquidistanten Messwerten wahlweise, Aufzeichnungsstop nach 20 Minuten Leerlauf.
-* Schönen Schaltplan auf die Webseite bringen.
-* Git auch lokal benutzen : https://nodered.org/docs/user-guide/projects/
-* Mqqt ?
-* Lorawan ?
-* Welche Auswerte Software ?
-* Ausprobieren : Uni- and Bipolar Hall IC Switches for Magnetic Field Applications, als Alternative zu einem Reedkontakt :TLE4905L, TLE4935L, TLE4945L, TLE4945-2L.
-* Magnetsensor mit I2C Interface ?
+1. Diagramme weiter optimieren.
+1. Dividend und andere Konstante optional per Einlesen aus Datei, äquivalent zur Ini Datei, und änderbar über die /ui. So, wie das jetzt schon mit dem Zählerstand passiert.
+1. Programm fit machen, um die Werte per WEB abzuholen. Per Homeassistant und dergleichen.
+1. Beim Start den letzten Zählerstand aus Protokolldatei lesen.
+1. Die 3 Protokolldateien nur wahlweise schreiben.
+1. Diagramm-Breiten besser an iPhone und iPad anpassen.
+1. Datei mit äquidistanten Messwerten wahlweise, Aufzeichnungsstop nach 20 Minuten Leerlauf.
+1. Schönen Schaltplan auf die Webseite bringen.
+1. Git auch lokal benutzen : https://nodered.org/docs/user-guide/projects/
+1. Mqtt ?
+1. Lorawan ?
+1. Welche Auswerte Software ?
+1. Ausprobieren : Uni- and Bipolar Hall IC Switches for Magnetic Field Applications, als Alternative zu einem Reedkontakt :TLE4905L, TLE4935L, TLE4945L, TLE4945-2L.
+1. Magnetsensor mit I2C Interface (QMC5883 magnetometer oder so) ?
 
 
 
