@@ -1,6 +1,6 @@
 # Gas Meter
 
-Dieses Programm laeuft parallel zu einem Gaszaehler auf einem Raspi. Ein Wechsel des Zaehlerstandes wird per Reed-Kontakt erfasst. Die momentane Leistung wird aus dem zeitlichen Abstand der Zaehlimpulse berechnet. Das Programm ist mit node-RED erstellt und benutzt die Erweiterung "Dashboard". Das Programm laeuft auf allen bisher erschienenen Raspis.
+Das Programm Gasmeter laeuft parallel zu einem Gaszaehler auf jedem bisher erschienenen Raspi. Der Wechsel des Zaehlerstandes wird per Reed-Kontakt erfasst. Die momentane Leistung wird aus dem zeitlichen Abstand der Zaehlimpulse berechnet. Das Programm ist mit node-RED erstellt und benutzt die Erweiterung "Dashboard", /ui . Die Benutzeroberflaeche /ui erlaubt Debug-Einstellungen, einen Simulationsmodus für permanenten Gasfluss und manuelles Ueberschreiben des Reed-Kontaktes. Die Ergebnisse werden grafisch über die letzten 4, 48 und 120 Stunden und in einer Monatsgrafik dargestellt. Die Rohdaten wandern zur genaueren spaeteren Auswertung in 4 unterschiedliche Logfiles.
 
 Keeps track of the gas meter reading and performance by using a reed-contact.
 
@@ -31,10 +31,10 @@ Wer immer diese Erweiterungen schon vorgenommen, bevor ich sie einbauen konnte :
 Zukunft :
 
 1. Diagramme weiter optimieren.
-1. Dividend und andere Konstante optional per Einlesen aus Datei, äquivalent zur Ini Datei, und aenderbar über die /ui. So, wie das jetzt schon mit dem Zaehlerstand passiert.
-1. Programm fit machen, um die Werte per WEB abzuholen. Per Homeassistant und dergleichen.
+1. Dividend und andere Konstante optional per Einlesen aus Datei, aequivalent zur Ini Datei, und aenderbar über die /ui. So, wie das jetzt schon mit dem Zaehlerstand passiert.
+1. Programm fit machen, um die Werte per WEB abzuholen. Per Homeassistant oder dergleichen.
 1. Beim Start den letzten Zaehlerstand aus Protokolldatei lesen.
-1. Die 3 Protokolldateien nur wahlweise schreiben.
+1. Die 4 Protokolldateien nur wahlweise schreiben.
 1. Diagramm-Breiten besser an iPhone und iPad anpassen.
 1. Datei mit aequidistanten Messwerten wahlweise, Aufzeichnungsstop nach 20 Minuten Leerlauf.
 1. Schoenen Schaltplan auf die Webseite bringen.
