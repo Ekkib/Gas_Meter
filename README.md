@@ -1,10 +1,10 @@
 # Gas Meter
 
-Das Programm Gasmeter laeuft parallel zu einem Gaszaehler auf jedem bisher erschienenen Raspi. Der Wechsel des Zaehlerstandes wird per Reed-Kontakt erfasst. Die momentane Leistung wird aus dem zeitlichen Abstand der Zaehlimpulse berechnet. Das Programm ist mit node-RED erstellt und benutzt die Erweiterung "Dashboard", /ui . Die Benutzeroberflaeche /ui erlaubt Debug-Einstellungen, einen Simulationsmodus für permanenten Gasfluss und manuelles Ueberschreiben des Reed-Kontaktes. Die Ergebnisse werden grafisch über die letzten 4, 48 und 120 Stunden und in einer Monatsgrafik dargestellt. Die Rohdaten wandern zur genaueren spaeteren Auswertung in 4 unterschiedliche Logfiles.
-
 Keeps track of the gas meter reading and performance by using a reed-contact.
 
-Kurze Beschreibung der einfachen externen Beschaltung :
+Das Programm Gasmeter laeuft parallel zu einem Gaszaehler auf jedem bisher erschienenen Raspi. Der Wechsel des Zaehlerstandes wird per Reed-Kontakt erfasst. Die momentane Leistung wird aus dem zeitlichen Abstand der Zaehlimpulse berechnet. Das Programm ist mit node-RED erstellt und benutzt die Erweiterung "Dashboard", /ui . Die Benutzeroberflaeche /ui erlaubt Debug-Einstellungen, einen Simulationsmodus für permanenten Gasfluss und manuelles Ueberschreiben des Reed-Kontaktes. Die Ergebnisse werden grafisch über die letzten 4, 48 und 120 Stunden und in einer Monatsgrafik dargestellt. Die Rohdaten wandern zur genaueren spaeteren Auswertung in 4 unterschiedliche Logfiles.
+
+Beschreibung der externen Beschaltung :
 
 Die Nummer der Pins des Raspi I/O Pfostensteckers in Klammern :
 
@@ -14,7 +14,7 @@ GPIO04 Pin (7, gelb)------I 1KOhm I-----+
 
 Die LED geht an, sobald der Reed-Kontakt schaltet. Über einen 1 KOhm Widerstand geht das Signal an den Pin GPIO04 (Pin 7) des Raspi.
 
-Ein anderer freier I/O Pin (Pin 13) treibt als Ausgang über einen 1 KOhm Widerstand eine LED. Diese LED blinkt im 10 Sekunden-Takt ("Heart-Beat") und bei jedem Signalwechsel des Reedkontaktes.
+Ein anderer freier I/O Pin (Pin 13) treibt als Ausgang ueber einen 1 KOhm Widerstand eine an Ground (Pin 25) angeschlossene LED, siehe unten. Diese LED blinkt im 10 Sekunden-Takt ("Heart-Beat") und bei jedem Signalwechsel des Reedkontaktes.
 
 Eine Schritt-fuer-Schritt Anleitung zur Installation auf einem Raspi wird auf Anforderung gerne erstellt.
 
@@ -26,7 +26,7 @@ Hier sind moegliche Erweiterungen gelistet :
 
 https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler/gas_pl%C3%A4ne
 
-Wer immer diese Erweiterungen schon vorgenommen, bevor ich sie einbauen konnte : Ich übernehme sie gerne.
+Wer immer diese Erweiterungen schon vorgenommen hat, bevor ich sie einbauen konnte : Ich übernehme sie gerne.
 
 Zukunft :
 
@@ -34,7 +34,7 @@ Zukunft :
 1. Dividend und andere Konstante optional per Einlesen aus Datei, aequivalent zur Ini Datei, und aenderbar über die /ui. So, wie das jetzt schon mit dem Zaehlerstand passiert.
 1. Programm fit machen, um die Werte per WEB abzuholen. Per Homeassistant oder dergleichen.
 1. Beim Start den letzten Zaehlerstand aus Protokolldatei lesen.
-1. Die 4 Protokolldateien nur wahlweise schreiben.
+1. Die 4 Protokolldateien nur wahlweise schreiben, um die SD-Karte zu schonen.
 1. Diagramm-Breiten besser an iPhone und iPad anpassen.
 1. Datei mit aequidistanten Messwerten wahlweise, Aufzeichnungsstop nach 20 Minuten Leerlauf.
 1. Schoenen Schaltplan auf die Webseite bringen.
