@@ -4,6 +4,9 @@ Keeps track of the gas meter reading and performance by using a reed-contact.
 
 Das Programm Gasmeter laeuft parallel zu einem Gaszaehler auf jedem bisher erschienenen Raspi. Der Wechsel des Zaehlerstandes wird per Reed-Kontakt erfasst. Die momentane Leistung wird aus dem zeitlichen Abstand der Zaehlimpulse berechnet. Das Programm ist mit node-RED erstellt und benutzt die Erweiterung "Dashboard", /ui . Die Benutzeroberflaeche /ui erlaubt Debug-Einstellungen, einen Simulationsmodus für permanenten Gasfluss und manuelles Ueberschreiben des Reed-Kontaktes. Die Ergebnisse werden grafisch über die letzten 4, 48 und 120 Stunden und in einer Monatsgrafik dargestellt. Die Rohdaten wandern zur genaueren spaeteren Auswertung in 4 unterschiedliche Logfiles.
 
+
+! [Schaltplan] Gas_Meter_Connector.png
+
 Beschreibung der externen Beschaltung gibt es hier als ASCII Schaltplan.
 
 Die Nummer der Pins des Raspi I/O Pfostensteckers in Klammern :
