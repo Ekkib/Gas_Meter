@@ -7,21 +7,19 @@ Das Programm Gasmeter laeuft parallel zu einem Gaszaehler auf jedem bisher ersch
 
 ![Schaltplan](Gas_Meter_Connector.png)
 
-Beschreibung der externen Beschaltung gibt es hier als ASCII Schaltplan.
-
-Die Nummer der Pins des Raspi I/O Pfostensteckers in Klammern :
+Die Beschreibung der externen Beschaltung gibt es hier auch als ASCII Schaltplan. Die Nummer der Pins des Raspi I/O Pfostensteckers in Klammern :
 
 +3,3 Volt (1, rot)---xReedx---I>LED>I---+---I 1KOhm I---Ground (9, schwarz)   
 GPIO04 Pin (7, gelb)------I 1KOhm I-----+  
 (als Eingang geschaltet )
 
-Die LED geht an, sobald der Reed-Kontakt schaltet. Über einen 1 KOhm Widerstand geht das Signal an den Pin GPIO04 (Pin 7) des Raspi.
+Die LED1 geht an, sobald der Reed-Kontakt schaltet. Über einen 1 KOhm Widerstand geht das Signal an den Pin GPIO04 (Pin 7) des Raspi.
 
-Ein anderer freier I/O Pin (Pin 13) treibt als Ausgang ueber einen 1 KOhm Widerstand eine an Ground (Pin 25) angeschlossene LED, siehe unten. Diese LED blinkt im 10 Sekunden-Takt ("Heart-Beat") und bei jedem Signalwechsel des Reedkontaktes.
+Ein anderer freier I/O Pin (Pin 13) treibt als Ausgang ueber einen 1 KOhm Widerstand eine an Ground (Pin 25) angeschlossene LED2, siehe unten. Diese LED2 blinkt im 10 Sekunden-Takt ("Heart-Beat") und bei jedem Signalwechsel des Reedkontaktes.
 
 Eine Schritt-fuer-Schritt Anleitung zur Installation auf einem Raspi wird auf Anforderung gerne erstellt.
 
-Mehr Infos und Fotos, auch der grafische Schaltplan :
+Mehr Infos und Fotos :
 
 https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler
 
@@ -40,14 +38,12 @@ Zukunft :
 1. Die 4 Protokolldateien nur wahlweise schreiben, um die SD-Karte zu schonen.
 1. Diagramm-Breiten besser an iPhone und iPad anpassen.
 1. Datei mit aequidistanten Messwerten wahlweise, Aufzeichnungsstop nach 20 Minuten Leerlauf.
-1. Den schoenen Schaltplan auch auf diese Webseite bringen.
 1. Git auch lokal benutzen : https://nodered.org/docs/user-guide/projects/
 1. Mqtt ?
 1. Lorawan ?
 1. Welche Auswerte Software ?
 1. Ausprobieren : Uni- and Bipolar Hall IC Switches for Magnetic Field Applications, als Alternative zu einem Reedkontakt :TLE4905L, TLE4935L, TLE4945L, TLE4945-2L.
 1. Magnetsensor mit I2C Interface (QMC5883 Magnetometer oder so) ?
-
 
 
 Ekkehard@Pofahl.de
