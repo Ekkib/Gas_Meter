@@ -4,7 +4,7 @@ Keeps track of the gas meter reading and performance by using a reed-contact.
 
 Das Programm Gasmeter laeuft parallel zu einem Gaszaehler auf jedem bisher erschienenen Raspi. Der Wechsel des Zaehlerstandes wird per Reed-Kontakt erfasst. Die momentane Leistung wird aus dem zeitlichen Abstand der Zaehlimpulse berechnet. Das Programm ist mit node-RED erstellt und benutzt die Erweiterung "Dashboard", /ui . Die Benutzeroberflaeche /ui erlaubt Debug-Einstellungen, einen Simulationsmodus für permanenten Gasfluss und manuelles Ueberschreiben des Reed-Kontaktes. Die Ergebnisse werden grafisch über die letzten 4, 48 und 120 Stunden und in einer Monatsgrafik dargestellt. Die Rohdaten wandern zur genaueren spaeteren Auswertung in 4 unterschiedliche Logfiles.
 
-Beschreibung der externen Beschaltung :
+Beschreibung der externen Beschaltung gibt es hier als ASCII Schaltplan.
 
 Die Nummer der Pins des Raspi I/O Pfostensteckers in Klammern :
 
@@ -18,11 +18,11 @@ Ein anderer freier I/O Pin (Pin 13) treibt als Ausgang ueber einen 1 KOhm Widers
 
 Eine Schritt-fuer-Schritt Anleitung zur Installation auf einem Raspi wird auf Anforderung gerne erstellt.
 
-Mehr Infos und Fotos :
+Mehr Infos und Fotos, auch der grafische Schaltplan :
 
 https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler
 
-Hier sind moegliche Erweiterungen gelistet :
+Hier sind moegliche Erweiterungen gelistet (etwas aktueller als "Zukunft", siehe unten) :
 
 https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler/gas_pl%C3%A4ne
 
@@ -37,7 +37,7 @@ Zukunft :
 1. Die 4 Protokolldateien nur wahlweise schreiben, um die SD-Karte zu schonen.
 1. Diagramm-Breiten besser an iPhone und iPad anpassen.
 1. Datei mit aequidistanten Messwerten wahlweise, Aufzeichnungsstop nach 20 Minuten Leerlauf.
-1. Schoenen Schaltplan auf die Webseite bringen.
+1. Den schoenen Schaltplan auch auf diese Webseite bringen.
 1. Git auch lokal benutzen : https://nodered.org/docs/user-guide/projects/
 1. Mqtt ?
 1. Lorawan ?
