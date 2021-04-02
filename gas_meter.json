@@ -16,7 +16,7 @@
         "debounce": "100",
         "read": false,
         "x": 150,
-        "y": 500,
+        "y": 540,
         "wires": [
             [
                 "94892c1d.8b06e"
@@ -34,7 +34,7 @@
         "overwriteFile": "false",
         "encoding": "none",
         "x": 530,
-        "y": 420,
+        "y": 460,
         "wires": [
             [
                 "cf31072c.9ef708",
@@ -47,13 +47,13 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "Gaszaehler",
-        "func": "// Gaszaehler  2020-02-13\n\nvar now = new Date() ;\n\n   global.set ('gX_zeit', 0 ) ; // Heart-beat\n\n   Reed = msg.payload ;\n   global.set ('gReed', Reed )  ;\n\n   Dividend = 10400000 ; // 104 Sekunden = 100 %\n   if (global.get('gDebug_status')){ Dividend = Dividend / 28 }\n\n   if (Reed == 1) {  \n     global.set ('gGaszaehler', (global.get('gGaszaehler') + 1)) ;\n     global.set ('gPulslaenge', \n                   Date.now() - global.get('gUp_flanke') ) ;\n     global.set ('gLeistung', \n        Math.trunc (Dividend / global.get ('gPulslaenge')) ) ;\n   }\n  \n  \n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n// now.toLocaleString() \n\n  msg.payload  =   ISODateString (now)\n//      + \", \" +     (global.get(\"gGaszaehler\") / 10 ) \n      + \", \" +     Number.parseFloat\n                  ((global.get('gGaszaehler')/10)).toFixed(1) \n      + \", \" +     Reed      \n //   + \", \" +     ((Date.now()-global.get('gUp_flanke'))/1000)      \n //   + \", \" +     ((Date.now()-global.get('gDn_flanke'))/1000)      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n  \n   if (Reed == 1) { global.set ('gUp_flanke', Date.now() ) ; } \n   else           { global.set ('gDn_flanke', Date.now() ) ; } \n\n   global.set ('gX_flanke', Date.now() ) ; \n   msg.topic = \"\" ;\nreturn msg;",
+        "func": "// Gaszaehler  2020-04-01\n\nvar now = new Date() ;\n\n   global.set ('gX_zeit', 0 ) ; // Heart-beat\n\n   Reed = msg.payload ;\n   global.set ('gReed', Reed )  ;\n\n   Dividend = 10400000 ; // 104 Sekunden = 100 %\n   \n\n   if (Reed == 1) {  \n     global.set ('gGaszaehler', (global.get('gGaszaehler') + 1)) ;\n     global.set ('gPulslaenge', \n                   Date.now() - global.get('gUp_flanke') ) ;\n     if (global.get ('gMin') > global.get ('gPulslaenge'))\n       { global.set ('gMin',   global.get ('gPulslaenge')) }\n     global.set ('gLeistung', \n       Math.trunc ( (global.get ('gMin') / \n                     global.get ('gPulslaenge') ) * 100) ) ;\n   }\n  \n  \n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n// now.toLocaleString() \n\n  msg.payload  =   ISODateString (now)\n//      + \", \" +     (global.get(\"gGaszaehler\") / 10 ) \n      + \", \" +     Number.parseFloat\n   ((global.get('gGaszaehler')/\n     global.get('gImpulse_per_m3'))).toFixed(1) \n      + \", \" +     Reed      \n //   + \", \" +     ((Date.now()-global.get('gUp_flanke'))/1000)      \n //   + \", \" +     ((Date.now()-global.get('gDn_flanke'))/1000)      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n  \n  \n  if ( global.get('gImpulse_per_m3') == 100 ) {\n  msg.payload  =   ISODateString (now)\n      + \", \" +     Number.parseFloat\n   ((global.get('gGaszaehler')/\n     global.get('gImpulse_per_m3'))).toFixed(2) \n      + \", \" +     Reed      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n      \n   \n   \n      \n      \n      \n   }\n  \n  \n   if (Reed == 1) { global.set ('gUp_flanke', Date.now() ) ; } \n   else           { global.set ('gDn_flanke', Date.now() ) ; } \n\n   global.set ('gX_flanke', Date.now() ) ; \n   msg.topic = \"\" ;\n   \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "x": 330,
-        "y": 420,
+        "y": 460,
         "wires": [
             [
                 "cd8f139f.6ad1f",
@@ -75,7 +75,7 @@
         "format": "{{msg.payload}}",
         "layout": "col-center",
         "x": 710,
-        "y": 420,
+        "y": 460,
         "wires": []
     },
     {
@@ -97,7 +97,7 @@
         "payloadType": "num",
         "topic": "",
         "x": 140,
-        "y": 460,
+        "y": 500,
         "wires": [
             [
                 "94892c1d.8b06e"
@@ -123,7 +123,7 @@
         "payloadType": "num",
         "topic": "",
         "x": 140,
-        "y": 420,
+        "y": 460,
         "wires": [
             [
                 "94892c1d.8b06e"
@@ -148,7 +148,7 @@
         "repair": false,
         "outputs": 1,
         "x": 430,
-        "y": 520,
+        "y": 560,
         "wires": [
             [
                 "208d618c.f401fe",
@@ -167,44 +167,10 @@
         "overwriteFile": "false",
         "encoding": "none",
         "x": 590,
-        "y": 460,
+        "y": 500,
         "wires": [
             []
         ]
-    },
-    {
-        "id": "b3ac43df.9ead2",
-        "type": "function",
-        "z": "559a98ba.60a488",
-        "name": "TickTack",
-        "func": "// TickTack zieht äquidistante Daten, 2020-01-30\n\nvar now = new Date();\n\n  msg.payload =  now.toLocaleString()\n    + \", \" +    (global.get ('gGaszaehler') / 10)\n    + \", \" +     global.get ('gLeistung')  \n    + \", \" +    (global.get ('gX_zeit') / 1000 )\n                ;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 180,
-        "y": 1040,
-        "wires": [
-            [
-                "38e6b358.56cabc"
-            ]
-        ]
-    },
-    {
-        "id": "38e6b358.56cabc",
-        "type": "ui_text",
-        "z": "559a98ba.60a488",
-        "group": "ba8e00a6.e48ab",
-        "order": 18,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "tick",
-        "format": "{{msg.payload}}",
-        "layout": "col-center",
-        "x": 370,
-        "y": 1040,
-        "wires": []
     },
     {
         "id": "5d2f5fad.6ea5b",
@@ -217,7 +183,7 @@
         "initialize": "",
         "finalize": "",
         "x": 460,
-        "y": 600,
+        "y": 640,
         "wires": [
             [
                 "c05e105b.55dd",
@@ -253,7 +219,7 @@
         "seg1": "100",
         "seg2": "101",
         "x": 660,
-        "y": 500,
+        "y": 540,
         "wires": []
     },
     {
@@ -278,7 +244,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 130,
-        "y": 60,
+        "y": 100,
         "wires": [
             [
                 "8482028.12ed1"
@@ -290,16 +256,17 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "init",
-        "func": "// Init, 2021-02-08\n\nglobal.set ('gGaszaehler', 40215 ) ; // am 2021-01-31\nglobal.set ('gGas_24',     40215 ) ;\nglobal.set ('gAbstand',    0 ) ;\nglobal.set ('gX_zeit',     0 ) ;\nglobal.set ('gReed',       0 ) ;\nglobal.set ('gLeistung',  60 ) ;\n\nglobal.set ('gDebug_status',  false ) ;\nglobal.set ('gGenerator',     0     ) ;\n\nglobal.set ('gSchwellenwert', 600000 ) ; \n\nglobal.set ('gX_flanke',  msg.payload ) ; \nglobal.set ('gUp_flanke', msg.payload ) ;\nglobal.set ('gDn_flanke', msg.payload ) ;\n\nglobal.set (\"gPulslaenge\", 150000) ; // 150 Sekunden\n\n// msg.payload = Date.now() ;\n\nreturn msg;",
+        "func": "// Init, 2021-04-01\n\nglobal.set ('gGaszaehler', 40215 ) ; // am 2021-01-31\nglobal.set ('gGas_24',     40215 ) ;\nglobal.set ('gAbstand',    0 ) ;\nglobal.set ('gX_zeit',     0 ) ;\nglobal.set ('gReed',       0 ) ;\nglobal.set ('gMin',    900000 ) ;\nglobal.set ('gLeistung',  60 ) ;\nglobal.set ('gImpulse_per_m3', 10 ) ; \n\n\nglobal.set ('gGenerator',     0     ) ;\n\nglobal.set ('gSchwellenwert', 600000 ) ; \n\nglobal.set ('gX_flanke',  msg.payload ) ; \nglobal.set ('gUp_flanke', msg.payload ) ;\nglobal.set ('gDn_flanke', msg.payload ) ;\n\nglobal.set (\"gPulslaenge\", 150000) ; // 150 Sekunden\n\n// msg.payload = Date.now() ;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "x": 270,
-        "y": 60,
+        "y": 100,
         "wires": [
             [
-                "6fb394b2.6f1d0c"
+                "6fb394b2.6f1d0c",
+                "10b52604.55466a"
             ]
         ]
     },
@@ -321,58 +288,11 @@
         "repair": false,
         "outputs": 1,
         "x": 410,
-        "y": 660,
+        "y": 700,
         "wires": [
             [
                 "5d2f5fad.6ea5b"
             ]
-        ]
-    },
-    {
-        "id": "12ea544.e7902ac",
-        "type": "ui_switch",
-        "z": "559a98ba.60a488",
-        "name": "",
-        "label": "Debug",
-        "tooltip": "",
-        "group": "ba8e00a6.e48ab",
-        "order": 8,
-        "width": 2,
-        "height": 1,
-        "passthru": true,
-        "decouple": "false",
-        "topic": "",
-        "style": "",
-        "onvalue": "true",
-        "onvalueType": "bool",
-        "onicon": "",
-        "oncolor": "",
-        "offvalue": "false",
-        "offvalueType": "bool",
-        "officon": "",
-        "offcolor": "",
-        "x": 130,
-        "y": 1280,
-        "wires": [
-            [
-                "46061be0.2eb9f4"
-            ]
-        ]
-    },
-    {
-        "id": "46061be0.2eb9f4",
-        "type": "function",
-        "z": "559a98ba.60a488",
-        "name": "",
-        "func": "global.set ('gDebug_status', msg.payload) ;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 320,
-        "y": 1280,
-        "wires": [
-            []
         ]
     },
     {
@@ -397,7 +317,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 170,
-        "y": 320,
+        "y": 360,
         "wires": [
             [
                 "66b278bb.5f9f48",
@@ -415,8 +335,8 @@
         "createDir": false,
         "overwriteFile": "false",
         "encoding": "none",
-        "x": 730,
-        "y": 320,
+        "x": 710,
+        "y": 360,
         "wires": [
             []
         ]
@@ -426,13 +346,13 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "per24h",
-        "func": "// per24h\n\nvar now = new Date() ;\n\n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n//  msg.payload = now.toLocaleString()  + \", \" +\n\n  msg.payload  =   ISODateString (now) + \", \" + \n  \n    Number.parseFloat\n    ((global.get('gGaszaehler')/10)).toFixed(1) + \", \" +\n     \n  ( (global.get ('gGaszaehler') - global.get('gGas_24'))/10) ;\n  \n  global.set ('gGas_24', global.get ('gGaszaehler') ) ;\n  \nreturn msg;",
+        "func": "// per24h\n\nvar now = new Date() ;\n\n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n//  msg.payload = now.toLocaleString()  + \", \" +\n\n  msg.payload  =   ISODateString (now) + \", \" + \n  \n    Number.parseFloat\n    ((global.get('gGaszaehler')/10)).toFixed(1) + \", \" +\n     \n  ( (global.get ('gGaszaehler') - global.get('gGas_24'))/10) ;\n\n  \n  if ( global.get('gImpulse_per_m3') == 100 ){\n  msg.payload  =   ISODateString (now) + \", \" + \n    Number.parseFloat\n    ((global.get('gGaszaehler')/100)).toFixed(2) + \", \" +\n  ( (global.get ('gGaszaehler') - global.get('gGas_24'))/100) ;\n  \n  }\n  \n  global.set ('gGas_24', global.get ('gGaszaehler') ) ;\n  \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 560,
-        "y": 320,
+        "x": 540,
+        "y": 360,
         "wires": [
             [
                 "8dc5944f.68b5a8"
@@ -475,8 +395,9 @@
             "#c5b0d5"
         ],
         "outputs": 1,
+        "useDifferentColor": false,
         "x": 650,
-        "y": 580,
+        "y": 620,
         "wires": [
             []
         ]
@@ -519,7 +440,7 @@
         "outputs": 1,
         "useDifferentColor": false,
         "x": 650,
-        "y": 540,
+        "y": 580,
         "wires": [
             []
         ]
@@ -541,11 +462,11 @@
         "min": 0,
         "max": "3",
         "step": 1,
-        "x": 150,
+        "x": 430,
         "y": 1220,
         "wires": [
             [
-                "85345fb3.eab25"
+                "b609116b.5e883"
             ]
         ]
     },
@@ -571,7 +492,7 @@
         "payload": "25",
         "payloadType": "num",
         "x": 130,
-        "y": 1100,
+        "y": 1080,
         "wires": [
             [
                 "84b77a1f.d20a58"
@@ -596,28 +517,10 @@
         "repair": false,
         "outputs": 1,
         "x": 290,
-        "y": 1100,
+        "y": 1080,
         "wires": [
             [
                 "1a7c6e38.e41a82"
-            ]
-        ]
-    },
-    {
-        "id": "85345fb3.eab25",
-        "type": "function",
-        "z": "559a98ba.60a488",
-        "name": "",
-        "func": "  global.set ('gGenerator', msg.payload ) ;\n  global.set ('gDebug_status', true ) ;\n  \n  msg.payload = true ;\n  \nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 320,
-        "y": 1220,
-        "wires": [
-            [
-                "12ea544.e7902ac"
             ]
         ]
     },
@@ -632,7 +535,7 @@
         "initialize": "",
         "finalize": "",
         "x": 440,
-        "y": 1100,
+        "y": 1080,
         "wires": [
             [
                 "94892c1d.8b06e"
@@ -661,7 +564,7 @@
         "payload": "9",
         "payloadType": "num",
         "x": 130,
-        "y": 1140,
+        "y": 1120,
         "wires": [
             [
                 "6d32cd9e.562d74"
@@ -686,7 +589,7 @@
         "repair": false,
         "outputs": 1,
         "x": 290,
-        "y": 1140,
+        "y": 1120,
         "wires": [
             [
                 "1a7c6e38.e41a82"
@@ -715,7 +618,7 @@
         "payload": "5",
         "payloadType": "num",
         "x": 130,
-        "y": 1180,
+        "y": 1160,
         "wires": [
             [
                 "b0bff103.78aa2"
@@ -740,7 +643,7 @@
         "repair": false,
         "outputs": 1,
         "x": 290,
-        "y": 1180,
+        "y": 1160,
         "wires": [
             [
                 "1a7c6e38.e41a82"
@@ -751,13 +654,13 @@
         "id": "a641b296.29084",
         "type": "ui_button",
         "z": "559a98ba.60a488",
-        "name": "Blink",
+        "name": "",
         "group": "ba8e00a6.e48ab",
         "order": 14,
         "width": 3,
         "height": 1,
         "passthru": true,
-        "label": "Blink",
+        "label": "Blinken",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
@@ -765,8 +668,8 @@
         "payload": "1",
         "payloadType": "num",
         "topic": "",
-        "x": 130,
-        "y": 840,
+        "x": 140,
+        "y": 860,
         "wires": [
             [
                 "af081f74.3da74",
@@ -790,7 +693,7 @@
         "randomUnits": "seconds",
         "drop": false,
         "x": 400,
-        "y": 880,
+        "y": 900,
         "wires": [
             [
                 "a0ddea15.af6388",
@@ -814,7 +717,7 @@
         "randomUnits": "seconds",
         "drop": false,
         "x": 400,
-        "y": 940,
+        "y": 960,
         "wires": [
             [
                 "88501e96.81c1f",
@@ -833,7 +736,7 @@
         "initialize": "",
         "finalize": "",
         "x": 650,
-        "y": 840,
+        "y": 860,
         "wires": [
             [
                 "26889c62.5e6c94"
@@ -851,7 +754,7 @@
         "initialize": "",
         "finalize": "",
         "x": 650,
-        "y": 1000,
+        "y": 1020,
         "wires": [
             [
                 "26889c62.5e6c94"
@@ -874,7 +777,7 @@
         "randomUnits": "seconds",
         "drop": false,
         "x": 400,
-        "y": 1000,
+        "y": 1020,
         "wires": [
             [
                 "a0ddea15.af6388"
@@ -903,11 +806,10 @@
         "payload": "",
         "payloadType": "date",
         "x": 140,
-        "y": 940,
+        "y": 960,
         "wires": [
             [
-                "c9fd0381.9f58d",
-                "b3ac43df.9ead2"
+                "c9fd0381.9f58d"
             ]
         ]
     },
@@ -922,14 +824,14 @@
         "freq": "",
         "out": "out",
         "x": 660,
-        "y": 920,
+        "y": 940,
         "wires": []
     },
     {
         "id": "d3ca1ad6.dc8918",
         "type": "comment",
         "z": "559a98ba.60a488",
-        "name": "Gas_Meter 2021-02-25 - e@pofahl.de",
+        "name": "Gas_Meter 2021-04-02 - e@pofahl.de",
         "info": "Dieses Programm laeuft parallel zu einem Gaszaehler. Der Zaehlerstand wird per Reed-Kontakt erfasst.\n\nKeeps track of the gas meter reading by using a reed-contact.\n\n\nEkkehard@Pofahl.de",
         "x": 370,
         "y": 20,
@@ -940,13 +842,13 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "Watchdog",
-        "func": "// Watchdog  2020-02-08\nvar now = new Date() ;\n\n  X_zeit = Date.now() - global.get ('gX_flanke') ;\n  global.set ('gX_zeit', X_zeit)  ;\n\n  Schwellenwert = 12 * 60 * 1000 ; // 12 Minuten\n  if (global.get('gDebug_status')) \n                         {Schwellenwert = 2 * 60 * 1000 ;} \n               \n  global.set ('gSchwellenwert', Schwellenwert)   ;         \n  \n  if ( X_zeit > Schwellenwert) {global.set ('gLeistung', 0); }\n\n//  let options = { weekday: 'numeric', year: 'numeric', \n//    month: 'numeric', day: 'numeric' };\n\n// console.log(date.toLocaleString('de-DE', options));\n\n//   msg.payload =    now.toLocaleString () ;\n  \n//  Intl.DateTimeFormat(undefined, {\n//  year: 'numeric',\n//  month: 'numeric',\n//  day: 'numeric',\n//  hour: 'numeric',\n//  minute: 'numeric',\n//  second: 'numeric'\n//  }).format(d)\n \n \n// function pad(n){return n<10 ? '0'+n : n}\n\n\n/* use a function for the exact format desired... */\nfunction ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n// var d = new Date();\n// console.log(ISODateString(d));\n\n  msg.payload = ISODateString (now) ;\n\n//  msg.payload =    now.toLocaleString () ;\n\n \n  \n  \nreturn msg;",
+        "func": "// Watchdog  2021-04-02\nvar now = new Date() ;\n\n  X_zeit = Date.now() - global.get ('gX_flanke') ;\n  global.set ('gX_zeit', X_zeit)  ;\n\n  Schwellenwert = 12 * 60 * 1000 ; // 12 Minuten\n  \n  global.set ('gSchwellenwert', Schwellenwert)   ;         \n  \n  if ( X_zeit > Schwellenwert) {global.set ('gLeistung', 0); }\n\n//  let options = { weekday: 'numeric', year: 'numeric', \n//    month: 'numeric', day: 'numeric' };\n\n// console.log(date.toLocaleString('de-DE', options));\n\n//   msg.payload =    now.toLocaleString () ;\n  \n//  Intl.DateTimeFormat(undefined, {\n//  year: 'numeric',\n//  month: 'numeric',\n//  day: 'numeric',\n//  hour: 'numeric',\n//  minute: 'numeric',\n//  second: 'numeric'\n//  }).format(d)\n \n \n// function pad(n){return n<10 ? '0'+n : n}\n\n\n/* use a function for the exact format desired... */\nfunction ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n// var d = new Date();\n// console.log(ISODateString(d));\n\n  msg.payload = ISODateString (now) ;\n\n//  msg.payload =    now.toLocaleString () ;\n\n \n  \n  \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "x": 450,
-        "y": 720,
+        "y": 760,
         "wires": [
             [
                 "a8928a4f.732c48",
@@ -970,7 +872,7 @@
         "delay": "2000",
         "topic": "",
         "x": 310,
-        "y": 140,
+        "y": 180,
         "wires": [
             [
                 "991d850e.388738"
@@ -989,8 +891,8 @@
         "label": "Lokale Zeit",
         "format": "{{msg.payload}}",
         "layout": "col-center",
-        "x": 630,
-        "y": 780,
+        "x": 670,
+        "y": 820,
         "wires": []
     },
     {
@@ -1009,7 +911,7 @@
         "interpolate": "linear",
         "nodata": "",
         "dot": false,
-        "ymin": "",
+        "ymin": "0",
         "ymax": "100",
         "removeOlder": "120",
         "removeOlderPoints": "",
@@ -1029,8 +931,9 @@
             "#c5b0d5"
         ],
         "outputs": 1,
+        "useDifferentColor": false,
         "x": 650,
-        "y": 620,
+        "y": 660,
         "wires": [
             []
         ]
@@ -1071,8 +974,9 @@
             "#c5b0d5"
         ],
         "outputs": 1,
+        "useDifferentColor": false,
         "x": 660,
-        "y": 740,
+        "y": 780,
         "wires": [
             []
         ]
@@ -1113,8 +1017,9 @@
             "#c5b0d5"
         ],
         "outputs": 1,
+        "useDifferentColor": false,
         "x": 660,
-        "y": 660,
+        "y": 700,
         "wires": [
             []
         ]
@@ -1130,7 +1035,7 @@
         "sendError": false,
         "encoding": "utf8",
         "x": 700,
-        "y": 60,
+        "y": 100,
         "wires": [
             [
                 "a2ccc897.8d1d88"
@@ -1148,7 +1053,7 @@
         "overwriteFile": "true",
         "encoding": "utf8",
         "x": 700,
-        "y": 120,
+        "y": 160,
         "wires": [
             [
                 "305c0306.e903cc"
@@ -1174,7 +1079,7 @@
         "payloadType": "num",
         "topic": "",
         "x": 390,
-        "y": 60,
+        "y": 100,
         "wires": [
             [
                 "7046cc40.53ac64"
@@ -1197,7 +1102,7 @@
         "randomUnits": "seconds",
         "drop": false,
         "x": 540,
-        "y": 60,
+        "y": 100,
         "wires": [
             [
                 "37487193.51c88e"
@@ -1220,7 +1125,7 @@
         "randomUnits": "seconds",
         "drop": false,
         "x": 540,
-        "y": 120,
+        "y": 160,
         "wires": [
             [
                 "1496df.b9009921"
@@ -1238,7 +1143,7 @@
         "initialize": "",
         "finalize": "",
         "x": 160,
-        "y": 120,
+        "y": 160,
         "wires": [
             [
                 "991d850e.388738"
@@ -1264,7 +1169,7 @@
         "payloadType": "str",
         "topic": "",
         "x": 440,
-        "y": 260,
+        "y": 300,
         "wires": [
             [
                 "8dd6ccb.427de3"
@@ -1307,8 +1212,9 @@
             "#c5b0d5"
         ],
         "outputs": 1,
+        "useDifferentColor": false,
         "x": 670,
-        "y": 700,
+        "y": 740,
         "wires": [
             []
         ]
@@ -1323,7 +1229,7 @@
         "width": 2,
         "height": 1,
         "passthru": false,
-        "label": "+ 0.1",
+        "label": "+",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
@@ -1332,7 +1238,7 @@
         "payloadType": "str",
         "topic": "",
         "x": 130,
-        "y": 220,
+        "y": 260,
         "wires": [
             [
                 "a9ca5d96.71ab6"
@@ -1349,7 +1255,7 @@
         "width": 2,
         "height": 1,
         "passthru": false,
-        "label": "- 0.1",
+        "label": "-",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
@@ -1358,7 +1264,7 @@
         "payloadType": "str",
         "topic": "",
         "x": 130,
-        "y": 260,
+        "y": 300,
         "wires": [
             [
                 "d6756e3e.95af7"
@@ -1376,7 +1282,7 @@
         "initialize": "",
         "finalize": "",
         "x": 260,
-        "y": 220,
+        "y": 260,
         "wires": [
             [
                 "66b278bb.5f9f48"
@@ -1394,7 +1300,7 @@
         "initialize": "",
         "finalize": "",
         "x": 260,
-        "y": 260,
+        "y": 300,
         "wires": [
             [
                 "66b278bb.5f9f48"
@@ -1414,7 +1320,7 @@
         "format": "{{msg.payload}}",
         "layout": "col-center",
         "x": 710,
-        "y": 280,
+        "y": 320,
         "wires": []
     },
     {
@@ -1428,7 +1334,7 @@
         "initialize": "",
         "finalize": "",
         "x": 440,
-        "y": 180,
+        "y": 220,
         "wires": [
             [
                 "14ce04b1.06ebdb"
@@ -1446,7 +1352,7 @@
         "initialize": "",
         "finalize": "",
         "x": 670,
-        "y": 180,
+        "y": 220,
         "wires": [
             [
                 "f74dd19f.a1f66"
@@ -1458,13 +1364,13 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "Lese gGaszaehler",
-        "func": "\n   msg.payload = Number.parseFloat\n      ( (global.get('gGaszaehler') / 10) ).toFixed(1) ;\n\n  // msg.payload = global.get('gGaszaehler') / 10 ;\n   \nreturn msg;",
+        "func": "\n   msg.payload = Number.parseFloat\n      ( (global.get('gGaszaehler') / 10) ).toFixed(1) ;\n\n   if (global.get ('gImpulse_per_m3') == 100 ) {\n     msg.payload = Number.parseFloat\n        ( (global.get('gGaszaehler') / 100) ).toFixed(2) ;\n   }\n\n  // msg.payload = global.get('gGaszaehler') / 10 ;\n   \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "x": 670,
-        "y": 240,
+        "y": 280,
         "wires": [
             [
                 "bb8d9988.a99df8"
@@ -1482,7 +1388,7 @@
         "initialize": "",
         "finalize": "",
         "x": 360,
-        "y": 320,
+        "y": 360,
         "wires": [
             [
                 "910197e1.68a728",
@@ -1497,9 +1403,9 @@
         "name": "",
         "group": "3a86132b.eccf7c",
         "order": 1,
-        "width": 0,
-        "height": 0,
-        "label": "Tagesverbrauch",
+        "width": "0",
+        "height": "0",
+        "label": "Tagesverbrauch (m3)",
         "chartType": "bar",
         "legend": "false",
         "xformat": "HH:mm:ss",
@@ -1528,7 +1434,7 @@
         "outputs": 1,
         "useDifferentColor": false,
         "x": 680,
-        "y": 360,
+        "y": 400,
         "wires": [
             []
         ]
@@ -1538,81 +1444,18 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "",
-        "func": "Tagesnr = new Date () ;\n\n   msg.topic = Tagesnr.getDate() ; \n\nreturn msg;",
+        "func": "Tagesnr = new Date () ;\n\n   msg.topic = Tagesnr.getDate() ; \n\n   msg.payload = msg.payload / global.get ('gImpulse_per_m3') ;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 510,
-        "y": 360,
+        "x": 480,
+        "y": 400,
         "wires": [
             [
                 "ddd89e17.de79f"
             ]
         ]
-    },
-    {
-        "id": "184fded9.8f20a1",
-        "type": "inject",
-        "z": "559a98ba.60a488",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 480,
-        "y": 1160,
-        "wires": [
-            [
-                "94a5044a.c7dce8"
-            ]
-        ]
-    },
-    {
-        "id": "94a5044a.c7dce8",
-        "type": "function",
-        "z": "559a98ba.60a488",
-        "name": "",
-        "func": "Tagesnr = new Date () ;\n\n   msg.payload = Tagesnr.getDate() ;\n   \nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 620,
-        "y": 1160,
-        "wires": [
-            [
-                "a792b457.48be68"
-            ]
-        ]
-    },
-    {
-        "id": "a792b457.48be68",
-        "type": "debug",
-        "z": "559a98ba.60a488",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 590,
-        "y": 1220,
-        "wires": []
     },
     {
         "id": "ae736c02.7e377",
@@ -1636,11 +1479,175 @@
         "payload": "",
         "payloadType": "date",
         "x": 250,
-        "y": 720,
+        "y": 760,
         "wires": [
             [
                 "9f09e4d4.f727f8"
             ]
+        ]
+    },
+    {
+        "id": "47c880bf.a23c1",
+        "type": "ui_button",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "group": "ba8e00a6.e48ab",
+        "order": 9,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "label": "Reset",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "x": 110,
+        "y": 1220,
+        "wires": [
+            [
+                "b191662c.4e0a88"
+            ]
+        ]
+    },
+    {
+        "id": "b191662c.4e0a88",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "    global.set ('gMin', 200000) ;\n    \n    msg.payload = 0 ;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 260,
+        "y": 1220,
+        "wires": [
+            [
+                "5328a7df.f0e1b8"
+            ]
+        ]
+    },
+    {
+        "id": "9b9679ee.ef3478",
+        "type": "ui_dropdown",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "cc710660.0f1078",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "10",
+                "value": 10,
+                "type": "num"
+            },
+            {
+                "label": "100",
+                "value": "100",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "",
+        "x": 130,
+        "y": 1280,
+        "wires": [
+            [
+                "fe212768.8ac458"
+            ]
+        ]
+    },
+    {
+        "id": "b609116b.5e883",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "  global.set ('gGenerator', msg.payload ) ;\n  \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 580,
+        "y": 1220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fe212768.8ac458",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "  global.set ('gImpulse_per_m3', msg.payload );\n  \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 300,
+        "y": 1280,
+        "wires": [
+            [
+                "bec70de7.34d17"
+            ]
+        ]
+    },
+    {
+        "id": "bec70de7.34d17",
+        "type": "file",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "filename": "impulse_per_m3.txt",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 490,
+        "y": 1280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "10b52604.55466a",
+        "type": "file in",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "filename": "impulse_per_m3.txt",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "x": 530,
+        "y": 60,
+        "wires": [
+            [
+                "9a01b29d.f17d2"
+            ]
+        ]
+    },
+    {
+        "id": "9a01b29d.f17d2",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "\n   global.set ('gImpulse_per_m3', msg.payload ) ;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 700,
+        "y": 60,
+        "wires": [
+            []
         ]
     },
     {
@@ -1650,7 +1657,7 @@
         "tab": "171e8c97.da0913",
         "order": 1,
         "disp": false,
-        "width": 7,
+        "width": "7",
         "collapse": false
     },
     {
@@ -1691,6 +1698,16 @@
         "order": 1,
         "disp": false,
         "width": "7",
+        "collapse": false
+    },
+    {
+        "id": "cc710660.0f1078",
+        "type": "ui_group",
+        "name": "setup",
+        "tab": "5dd640fc.c52c1",
+        "order": 1,
+        "disp": true,
+        "width": "6",
         "collapse": false
     },
     {
@@ -1735,6 +1752,15 @@
         "name": "Energie",
         "icon": "dashboard",
         "order": 5,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "5dd640fc.c52c1",
+        "type": "ui_tab",
+        "name": "Einstellungen",
+        "icon": "dashboard",
+        "order": 6,
         "disabled": false,
         "hidden": false
     }
