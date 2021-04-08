@@ -25,7 +25,7 @@ https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler
 
 Hier sind moegliche Erweiterungen gelistet (etwas aktueller als "Zukunft", siehe unten) :
 
-https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler/gas_pl%C3%A4ne
+https://sites.google.com/site/heizungregelung/allgemeines/gaszaehler/gasplaene
 
 Wer immer diese Erweiterungen schon vorgenommen hat, bevor ich sie einbauen konnte : Ich übernehme sie gerne.
 
