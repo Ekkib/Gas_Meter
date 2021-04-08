@@ -32,7 +32,7 @@ Wer immer diese Erweiterungen schon vorgenommen hat, bevor ich sie einbauen konn
 Zukunft :
 
 1. Diagramme weiter optimieren.
-1. Dividend und andere Konstante optional per Einlesen aus Datei, aequivalent zur Ini Datei, und aenderbar über die /ui. So, wie das jetzt schon mit dem Zaehlerstand passiert.
+1. Konstante und Einstellungen optional per Einlesen aus Datei, aequivalent zur Ini Datei, und aenderbar über die /ui. So, wie das jetzt schon mit dem Zaehlerstand passiert.
 1. Programm fit machen, um die Werte per WEB abzuholen. Per Homeassistant oder dergleichen.
 1. Beim Start den letzten Zaehlerstand aus Protokolldatei lesen.
 1. Die 4 Protokolldateien nur wahlweise schreiben, um die SD-Karte zu schonen.
