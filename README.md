@@ -7,15 +7,14 @@ Das Programm Gasmeter laeuft parallel zu einem Gaszaehler auf jedem bisher ersch
 
 ![Schaltplan](Gas_Meter_Connector.png)
 
-Die Beschreibung der externen Beschaltung gibt es hier auch als ASCII Schaltplan. Die Nummer der Pins des Raspi I/O Pfostensteckers in Klammern :
-
-+3,3 Volt (1, rot)---xReedx---I>LED>I---+---I 1KOhm I---Ground (9, schwarz)   
-GPIO04 Pin (7, gelb)------I 1KOhm I-----+  
-(als Eingang geschaltet )
 
 Die LED1 geht an, sobald der Reed-Kontakt schaltet. Über einen 1 KOhm Widerstand geht das Signal an den Pin GPIO04 (Pin 7) des Raspi.
 
 Ein anderer freier I/O Pin (Pin 13) treibt als Ausgang ueber einen 1 KOhm Widerstand eine an Ground (Pin 25) angeschlossene LED2, siehe unten. Diese LED2 blinkt im 10 Sekunden-Takt ("Heart-Beat") und bei jedem Signalwechsel des Reedkontaktes.
+
+Eine "Sparversion" mit einer LED funktioniert auch :
+
+(GPIO_4, Pin 7)--[Reed-Kontakt]--(1 kOhm)--(GND, Pin 9)--(1 kOhm)--I<I--(GPIO_27, Pin 13)
 
 Eine Schritt-fuer-Schritt Anleitung zur Installation auf einem Raspi wird auf Anforderung gerne erstellt.
 
