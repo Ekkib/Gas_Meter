@@ -12,7 +12,7 @@
         "z": "559a98ba.60a488",
         "name": "Reedkontakt",
         "pin": "7",
-        "intype": "tri",
+        "intype": "up",
         "debounce": "100",
         "read": false,
         "x": 150,
@@ -47,7 +47,7 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "Gaszaehler",
-        "func": "// Gaszaehler  2020-04-01\n\nvar now = new Date() ;\n\n   global.set ('gX_zeit', 0 ) ; // Heart-beat\n\n   Reed = msg.payload ;\n   global.set ('gReed', Reed )  ;\n\n   Dividend = 10400000 ; // 104 Sekunden = 100 %\n   \n\n   if (Reed == 1) {  \n     global.set ('gGaszaehler', (global.get('gGaszaehler') + 1)) ;\n     global.set ('gPulslaenge', \n                   Date.now() - global.get('gUp_flanke') ) ;\n     if (global.get ('gMin') > global.get ('gPulslaenge'))\n       { global.set ('gMin',   global.get ('gPulslaenge')) }\n     global.set ('gLeistung', \n       Math.trunc ( (global.get ('gMin') / \n                     global.get ('gPulslaenge') ) * 100) ) ;\n   }\n  \n  \n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n// now.toLocaleString() \n\n  msg.payload  =   ISODateString (now)\n//      + \", \" +     (global.get(\"gGaszaehler\") / 10 ) \n      + \", \" +     Number.parseFloat\n   ((global.get('gGaszaehler')/\n     global.get('gImpulse_per_m3'))).toFixed(1) \n      + \", \" +     Reed      \n //   + \", \" +     ((Date.now()-global.get('gUp_flanke'))/1000)      \n //   + \", \" +     ((Date.now()-global.get('gDn_flanke'))/1000)      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n  \n  \n  if ( global.get('gImpulse_per_m3') == 100 ) {\n  msg.payload  =   ISODateString (now)\n      + \", \" +     Number.parseFloat\n   ((global.get('gGaszaehler')/\n     global.get('gImpulse_per_m3'))).toFixed(2) \n      + \", \" +     Reed      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n      \n   \n   \n      \n      \n      \n   }\n  \n  \n   if (Reed == 1) { global.set ('gUp_flanke', Date.now() ) ; } \n   else           { global.set ('gDn_flanke', Date.now() ) ; } \n\n   global.set ('gX_flanke', Date.now() ) ; \n   msg.topic = \"\" ;\n   \nreturn msg;",
+        "func": "// Gaszaehler  2020-06-07\n\nvar now = new Date() ;\n\n   global.set ('gX_zeit', 0 ) ; // Heart-beat\n\n   Reed = msg.payload ;\n   global.set ('gReed', Reed )  ;\n\n   if (Reed == 1) {  \n     global.set ('gGaszaehler', (global.get('gGaszaehler') + 1)) ;\n     global.set ('gPulslaenge', \n                   Date.now() - global.get('gUp_flanke') ) ;\n     if (global.get ('gMin') > global.get ('gPulslaenge'))\n       { global.set ('gMin',   global.get ('gPulslaenge')) }\n     global.set ('gLeistung', \n       Math.trunc ( (global.get ('gMin') / \n                     global.get ('gPulslaenge') ) * 100) ) ;\n   }\n  \n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n// now.toLocaleString() \n\n  msg.payload  =   ISODateString (now)\n//      + \", \" +     (global.get(\"gGaszaehler\") / 10 ) \n      + \", \" +     Number.parseFloat\n   ((global.get('gGaszaehler')/\n     global.get('gImpulse_per_m3'))).toFixed(1) \n      + \", \" +     Reed      \n //   + \", \" +     ((Date.now()-global.get('gUp_flanke'))/1000)      \n //   + \", \" +     ((Date.now()-global.get('gDn_flanke'))/1000)      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n  \n  if ( global.get('gImpulse_per_m3') == 100 ) {\n  msg.payload  =   ISODateString (now)\n      + \", \" +     Number.parseFloat\n   ((global.get('gGaszaehler')/\n     global.get('gImpulse_per_m3'))).toFixed(2) \n      + \", \" +     Reed      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n   }\n  \n   if (Reed == 1) { global.set ('gUp_flanke', Date.now() ) ; } \n   else           { global.set ('gDn_flanke', Date.now() ) ; } \n\n   global.set ('gX_flanke', Date.now() ) ; \n   msg.topic = \"\" ;\n   \n   Tagesnr = new Date () ;\n\n   if ( Tagesnr.getDate() != global.get ('gAktTag') ) {\n      global.set ('gGas_24', global.get ('gGaszaehler') ) ;\n   }\n   \n   global.set ('gAktTag', Tagesnr.getDate() ) ;\n   \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -58,7 +58,9 @@
             [
                 "cd8f139f.6ad1f",
                 "7c8820eb.f7b07",
-                "a641b296.29084"
+                "a641b296.29084",
+                "a9c4c2ab.04995",
+                "5957624a.c7de9c"
             ]
         ]
     },
@@ -166,7 +168,7 @@
         "createDir": false,
         "overwriteFile": "false",
         "encoding": "none",
-        "x": 590,
+        "x": 530,
         "y": 500,
         "wires": [
             []
@@ -192,7 +194,8 @@
                 "9bc45d85.60248",
                 "5f07f114.0984d",
                 "58005a7d.94bb24",
-                "c8a30219.f2fd2"
+                "c8a30219.f2fd2",
+                "8972bac9.449aa8"
             ]
         ]
     },
@@ -256,7 +259,7 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "init",
-        "func": "// Init, 2021-04-01\n\nglobal.set ('gGaszaehler', 40215 ) ; // am 2021-01-31\nglobal.set ('gGas_24',     40215 ) ;\nglobal.set ('gAbstand',    0 ) ;\nglobal.set ('gX_zeit',     0 ) ;\nglobal.set ('gReed',       0 ) ;\nglobal.set ('gMin',    900000 ) ;\nglobal.set ('gLeistung',  60 ) ;\nglobal.set ('gImpulse_per_m3', 10 ) ; \n\n\nglobal.set ('gGenerator',     0     ) ;\n\nglobal.set ('gSchwellenwert', 600000 ) ; \n\nglobal.set ('gX_flanke',  msg.payload ) ; \nglobal.set ('gUp_flanke', msg.payload ) ;\nglobal.set ('gDn_flanke', msg.payload ) ;\n\nglobal.set (\"gPulslaenge\", 150000) ; // 150 Sekunden\n\n// msg.payload = Date.now() ;\n\nreturn msg;",
+        "func": "// Init, 2021-06-07\n\nglobal.set ('gGaszaehler', 40215 ) ; // am 2021-01-31\nglobal.set ('gGas_24',     40215 ) ;\nglobal.set ('gAbstand',    0 ) ;\nglobal.set ('gX_zeit',     0 ) ;\nglobal.set ('gReed',       0 ) ;\nglobal.set ('gMin',    900000 ) ;\nglobal.set ('gLeistung',  60 ) ;\nglobal.set ('gImpulse_per_m3', 10 ) ; \n\nglobal.set ('gAktTag', 0 ) ;\n\nglobal.set ('gGenerator',     0     ) ;\n\nglobal.set ('gSchwellenwert', 600000 ) ; \n\nglobal.set ('gX_flanke',  msg.payload ) ; \nglobal.set ('gUp_flanke', msg.payload ) ;\nglobal.set ('gDn_flanke', msg.payload ) ;\n\nglobal.set (\"gPulslaenge\", 150000) ; // 150 Sekunden\n\n// msg.payload = Date.now() ;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -266,6 +269,7 @@
         "wires": [
             [
                 "6fb394b2.6f1d0c",
+                "918e4383.15c06",
                 "10b52604.55466a"
             ]
         ]
@@ -336,7 +340,7 @@
         "overwriteFile": "false",
         "encoding": "none",
         "x": 710,
-        "y": 360,
+        "y": 380,
         "wires": [
             []
         ]
@@ -346,7 +350,7 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "per24h",
-        "func": "// per24h\n\nvar now = new Date() ;\n\n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n//  msg.payload = now.toLocaleString()  + \", \" +\n\n  msg.payload  =   ISODateString (now) + \", \" + \n  \n    Number.parseFloat\n    ((global.get('gGaszaehler')/10)).toFixed(1) + \", \" +\n     \n  ( (global.get ('gGaszaehler') - global.get('gGas_24'))/10) ;\n\n  \n  if ( global.get('gImpulse_per_m3') == 100 ){\n  msg.payload  =   ISODateString (now) + \", \" + \n    Number.parseFloat\n    ((global.get('gGaszaehler')/100)).toFixed(2) + \", \" +\n  ( (global.get ('gGaszaehler') - global.get('gGas_24'))/100) ;\n  \n  }\n  \n  global.set ('gGas_24', global.get ('gGaszaehler') ) ;\n  \nreturn msg;",
+        "func": "// per24h\n\nvar now = new Date() ;\n\n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n//  msg.payload = now.toLocaleString()  + \", \" +\n\n  msg.payload  =   ISODateString (now) + \", \" + \n  \n    Number.parseFloat\n    ((global.get('gGaszaehler')/10)).toFixed(1) + \", \" +\n   ( (global.get('gGaszaehler') - global.get('gGas_24'))/10) ;\n\n  \n  if ( global.get('gImpulse_per_m3') == 100 ){\n  msg.payload  =   ISODateString (now) + \", \" + \n    Number.parseFloat\n    ((global.get('gGaszaehler')/100)).toFixed(2) + \", \" +\n   ( (global.get('gGaszaehler') - global.get('gGas_24'))/100) ;\n  \n  }\n  \n  // global.set ('gGas_24', global.get ('gGaszaehler') ) ;\n  \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -450,7 +454,7 @@
         "type": "ui_slider",
         "z": "559a98ba.60a488",
         "name": "",
-        "label": "Simulation",
+        "label": "Simu (5, 9, 25)",
         "tooltip": "",
         "group": "ba8e00a6.e48ab",
         "order": 17,
@@ -462,7 +466,7 @@
         "min": 0,
         "max": "3",
         "step": 1,
-        "x": 430,
+        "x": 460,
         "y": 1220,
         "wires": [
             [
@@ -655,8 +659,8 @@
         "type": "ui_button",
         "z": "559a98ba.60a488",
         "name": "",
-        "group": "ba8e00a6.e48ab",
-        "order": 14,
+        "group": "cc710660.0f1078",
+        "order": 2,
         "width": 3,
         "height": 1,
         "passthru": true,
@@ -730,13 +734,13 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "1",
-        "func": "  msg.payload = 1 ;\nreturn msg;",
+        "func": "  msg.payload = 1 ;\n  if (global.get ('gReed') == 1) { msg.payload = 0 } \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "x": 650,
-        "y": 860,
+        "y": 900,
         "wires": [
             [
                 "26889c62.5e6c94"
@@ -748,13 +752,13 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "0",
-        "func": "  msg.payload = 0 ;\nreturn msg;",
+        "func": "  msg.payload = 0 ;\n  if (global.get ('gReed') == 1) { msg.payload = 1 } \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "x": 650,
-        "y": 1020,
+        "y": 1040,
         "wires": [
             [
                 "26889c62.5e6c94"
@@ -824,16 +828,16 @@
         "freq": "",
         "out": "out",
         "x": 660,
-        "y": 940,
+        "y": 960,
         "wires": []
     },
     {
         "id": "d3ca1ad6.dc8918",
         "type": "comment",
         "z": "559a98ba.60a488",
-        "name": "Gas_Meter 2021-04-02 - e@pofahl.de",
-        "info": "Dieses Programm laeuft parallel zu einem Gaszaehler. Der Zaehlerstand wird per Reed-Kontakt erfasst.\n\nKeeps track of the gas meter reading by using a reed-contact.\n\n\nEkkehard@Pofahl.de",
-        "x": 370,
+        "name": "Gas_Meter - e@pofahl.de",
+        "info": "Keeps track of the gas meter reading by using a reed-contact. User Interface with /ui and home assistant\n\nDieses Programm laeuft parallel zu einem Gaszaehler. Der Zaehlerstand wird per Reed-Kontakt erfasst.\n\nBenutzung durch einen kleinen Web-Server auf /ui und home assistant.\n\nBeschreibung :\n\nhttps://sites.google.com/site/heizungregelung/allgemeines/gaszaehler\n\nhttps://github.com/Ekkib/Gas_Meter\n\nFolgende zusätzlichen Nodes müssen geladen sein :\n\n- Digital I/O für raspi\n- $ npm install node-red-dashboard\n- https://flows.nodered.org/node/node-red-contrib-home-assistant-websocket\n\n\n\nEkkehard@Pofahl.de",
+        "x": 210,
         "y": 20,
         "wires": []
     },
@@ -1034,7 +1038,7 @@
         "chunk": false,
         "sendError": false,
         "encoding": "utf8",
-        "x": 700,
+        "x": 740,
         "y": 100,
         "wires": [
             [
@@ -1078,7 +1082,7 @@
         "payload": "0",
         "payloadType": "num",
         "topic": "",
-        "x": 390,
+        "x": 430,
         "y": 100,
         "wires": [
             [
@@ -1101,7 +1105,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": false,
-        "x": 540,
+        "x": 580,
         "y": 100,
         "wires": [
             [
@@ -1320,7 +1324,7 @@
         "format": "{{msg.payload}}",
         "layout": "col-center",
         "x": 710,
-        "y": 320,
+        "y": 300,
         "wires": []
     },
     {
@@ -1370,10 +1374,11 @@
         "initialize": "",
         "finalize": "",
         "x": 670,
-        "y": 280,
+        "y": 260,
         "wires": [
             [
-                "bb8d9988.a99df8"
+                "bb8d9988.a99df8",
+                "4dc9b071.9b9e9"
             ]
         ]
     },
@@ -1391,8 +1396,7 @@
         "y": 360,
         "wires": [
             [
-                "910197e1.68a728",
-                "a9c4c2ab.04995"
+                "910197e1.68a728"
             ]
         ]
     },
@@ -1434,7 +1438,7 @@
         "outputs": 1,
         "useDifferentColor": false,
         "x": 680,
-        "y": 400,
+        "y": 420,
         "wires": [
             []
         ]
@@ -1444,7 +1448,7 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "",
-        "func": "Tagesnr = new Date () ;\n\n   msg.topic = Tagesnr.getDate() ; \n\n   msg.payload = msg.payload / global.get ('gImpulse_per_m3') ;\n\nreturn msg;",
+        "func": "Tagesnr = new Date () ;\n\n msg.topic   = Tagesnr.getDate() ; \n\n msg.payload = (global.get('gGaszaehler') - global.get('gGas_24'))\n                  / global.get ('gImpulse_per_m3') ;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1504,7 +1508,7 @@
         "payload": "",
         "payloadType": "str",
         "topic": "",
-        "x": 110,
+        "x": 150,
         "y": 1220,
         "wires": [
             [
@@ -1522,7 +1526,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 260,
+        "x": 300,
         "y": 1220,
         "wires": [
             [
@@ -1539,7 +1543,7 @@
         "tooltip": "",
         "place": "Select option",
         "group": "cc710660.0f1078",
-        "order": 0,
+        "order": 1,
         "width": 0,
         "height": 0,
         "passthru": true,
@@ -1576,7 +1580,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 580,
+        "x": 620,
         "y": 1220,
         "wires": [
             []
@@ -1592,7 +1596,7 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 300,
+        "x": 280,
         "y": 1280,
         "wires": [
             [
@@ -1610,7 +1614,7 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 490,
+        "x": 450,
         "y": 1280,
         "wires": [
             []
@@ -1651,6 +1655,768 @@
         ]
     },
     {
+        "id": "918e4383.15c06",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_Belegung",
+        "func": "  msg.topic = 1 ;\n  msg.payload = 0 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 170,
+        "y": 1360,
+        "wires": [
+            [
+                "accf8e93.3ff08",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "accf8e93.3ff08",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b02",
+        "func": "  msg.topic = 2 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1420,
+        "wires": [
+            [
+                "156e9553.b6552b",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "156e9553.b6552b",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b03",
+        "func": "  msg.topic = 3 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 202,
+        "y": 1460,
+        "wires": [
+            [
+                "a1b41066.5e3f4",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "a1b41066.5e3f4",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b04",
+        "func": "  msg.topic = 4 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1500,
+        "wires": [
+            [
+                "6b6899bf.f924f8",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "6b6899bf.f924f8",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b05",
+        "func": "  msg.topic = 5 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1540,
+        "wires": [
+            [
+                "724c6b71.aec344",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "724c6b71.aec344",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b06",
+        "func": "  msg.topic = 6 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1580,
+        "wires": [
+            [
+                "12772217.95417e",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "12772217.95417e",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b07",
+        "func": "  msg.topic = 7 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1620,
+        "wires": [
+            [
+                "ee76d91c.acc9e8",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "ee76d91c.acc9e8",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b08",
+        "func": "  msg.topic = 8 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1660,
+        "wires": [
+            [
+                "c31a6e7e.74bc2",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "c31a6e7e.74bc2",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b09",
+        "func": "  msg.topic = 9 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1700,
+        "wires": [
+            [
+                "1f861b59.a0ade5",
+                "9fe6c274.009d1"
+            ]
+        ]
+    },
+    {
+        "id": "1f861b59.a0ade5",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 1500,
+        "wires": [
+            [
+                "ddd89e17.de79f"
+            ]
+        ]
+    },
+    {
+        "id": "9fe6c274.009d1",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b10",
+        "func": "  msg.topic = 10 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1740,
+        "wires": [
+            [
+                "571595af.93038c",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "571595af.93038c",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b11",
+        "func": "  msg.topic = 11 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1780,
+        "wires": [
+            [
+                "d7a9a03e.dd7d7",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "d7a9a03e.dd7d7",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b12",
+        "func": "  msg.topic = 12 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1820,
+        "wires": [
+            [
+                "b1750190.8cc08",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "81abe002.ad801",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b31",
+        "func": "  msg.topic = 31 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 1680,
+        "wires": [
+            [
+                "5f94d3ab.87fefc"
+            ]
+        ]
+    },
+    {
+        "id": "5b6c961b.828d68",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b23",
+        "func": "  msg.topic = 23 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 2000,
+        "wires": [
+            [
+                "f503585.202cba8",
+                "5f94d3ab.87fefc"
+            ]
+        ]
+    },
+    {
+        "id": "c66cba39.90d5e8",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b30",
+        "func": "  msg.topic = 30 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 1720,
+        "wires": [
+            [
+                "81abe002.ad801",
+                "5f94d3ab.87fefc"
+            ]
+        ]
+    },
+    {
+        "id": "1a6b4d0f.bbf3e3",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b26",
+        "func": "  msg.topic = 26 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 1880,
+        "wires": [
+            [
+                "3fbbc870.b16d38",
+                "5f94d3ab.87fefc"
+            ]
+        ]
+    },
+    {
+        "id": "ab6972ef.326e4",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b19",
+        "func": "  msg.topic = 19 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 2100,
+        "wires": [
+            [
+                "d0914b6b.f9b978",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "662e9fae.f3c32",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b18",
+        "func": "  msg.topic = 18 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 2060,
+        "wires": [
+            [
+                "ab6972ef.326e4",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "f503585.202cba8",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b24",
+        "func": "  msg.topic = 24 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 1960,
+        "wires": [
+            [
+                "6d4f3f11.1a371",
+                "5f94d3ab.87fefc"
+            ]
+        ]
+    },
+    {
+        "id": "ea5cbb06.59ee68",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b28",
+        "func": "  msg.topic = 28 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 1800,
+        "wires": [
+            [
+                "650c67c4.da3418",
+                "5f94d3ab.87fefc"
+            ]
+        ]
+    },
+    {
+        "id": "6d4f3f11.1a371",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b25",
+        "func": "  msg.topic = 25 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 1920,
+        "wires": [
+            [
+                "1a6b4d0f.bbf3e3",
+                "5f94d3ab.87fefc"
+            ]
+        ]
+    },
+    {
+        "id": "650c67c4.da3418",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b29",
+        "func": "  msg.topic = 29 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 1760,
+        "wires": [
+            [
+                "c66cba39.90d5e8",
+                "5f94d3ab.87fefc"
+            ]
+        ]
+    },
+    {
+        "id": "3fbbc870.b16d38",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b27",
+        "func": "  msg.topic = 27 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 1840,
+        "wires": [
+            [
+                "ea5cbb06.59ee68",
+                "5f94d3ab.87fefc"
+            ]
+        ]
+    },
+    {
+        "id": "3e70f0ca.50737",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b17",
+        "func": "  msg.topic = 17 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 2020,
+        "wires": [
+            [
+                "662e9fae.f3c32",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "fe7313ff.71e45",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b16",
+        "func": "  msg.topic = 16 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1980,
+        "wires": [
+            [
+                "3e70f0ca.50737",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "ad6b7adb.248828",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b15",
+        "func": "  msg.topic = 15 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1940,
+        "wires": [
+            [
+                "fe7313ff.71e45",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "d4015d0e.5e39b",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b14",
+        "func": "  msg.topic = 14 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1900,
+        "wires": [
+            [
+                "ad6b7adb.248828",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "b1750190.8cc08",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b13",
+        "func": "  msg.topic = 13 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 1860,
+        "wires": [
+            [
+                "d4015d0e.5e39b",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "d0914b6b.f9b978",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b20",
+        "func": "  msg.topic = 20 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 200,
+        "y": 2140,
+        "wires": [
+            [
+                "2d517cb5.bf0e54",
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "a7b6238c.fcfd4",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b22",
+        "func": "  msg.topic = 22 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 2040,
+        "wires": [
+            [
+                "5b6c961b.828d68",
+                "5f94d3ab.87fefc"
+            ]
+        ]
+    },
+    {
+        "id": "2d517cb5.bf0e54",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "Diagramm_b21",
+        "func": "  msg.topic = 21 ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 500,
+        "y": 2080,
+        "wires": [
+            [
+                "a7b6238c.fcfd4",
+                "5f94d3ab.87fefc"
+            ]
+        ]
+    },
+    {
+        "id": "5f94d3ab.87fefc",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 720,
+        "y": 1720,
+        "wires": [
+            [
+                "1f861b59.a0ade5"
+            ]
+        ]
+    },
+    {
+        "id": "a1a54d34.77302",
+        "type": "ui_text",
+        "z": "559a98ba.60a488",
+        "group": "cc710660.0f1078",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Gas_Meter Version : 2021-06-08",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 470,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "30cc7ad3.9f0736",
+        "type": "ui_text",
+        "z": "559a98ba.60a488",
+        "group": "cc710660.0f1078",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Minimum_Zeit_ms",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 170,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "5957624a.c7de9c",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "  msg.payload = global.get ('gMin') ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 140,
+        "y": 620,
+        "wires": [
+            [
+                "30cc7ad3.9f0736"
+            ]
+        ]
+    },
+    {
+        "id": "8972bac9.449aa8",
+        "type": "ha-entity",
+        "z": "559a98ba.60a488",
+        "name": "HA_Gas_Leistung",
+        "server": "e3679475.2b2c58",
+        "version": 1,
+        "debugenabled": true,
+        "outputs": 1,
+        "entityType": "sensor",
+        "config": [
+            {
+                "property": "name",
+                "value": "xGas_Leistung"
+            },
+            {
+                "property": "device_class",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            },
+            {
+                "property": "unit_of_measurement",
+                "value": "%"
+            }
+        ],
+        "state": "payload",
+        "stateType": "msg",
+        "attributes": [],
+        "resend": true,
+        "outputLocation": "",
+        "outputLocationType": "none",
+        "inputOverride": "allow",
+        "outputOnStateChange": false,
+        "outputPayload": "$entity().state ? \"on\": \"off\"",
+        "outputPayloadType": "jsonata",
+        "x": 690,
+        "y": 860,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4dc9b071.9b9e9",
+        "type": "ha-entity",
+        "z": "559a98ba.60a488",
+        "name": "HA_Gas_Zaehler",
+        "server": "e3679475.2b2c58",
+        "version": 1,
+        "debugenabled": false,
+        "outputs": 1,
+        "entityType": "sensor",
+        "config": [
+            {
+                "property": "name",
+                "value": "xGas_Zaehler"
+            },
+            {
+                "property": "device_class",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            },
+            {
+                "property": "unit_of_measurement",
+                "value": "m3"
+            }
+        ],
+        "state": "payload",
+        "stateType": "msg",
+        "attributes": [],
+        "resend": true,
+        "outputLocation": "",
+        "outputLocationType": "none",
+        "inputOverride": "allow",
+        "outputOnStateChange": false,
+        "outputPayload": "$entity().state ? \"on\": \"off\"",
+        "outputPayloadType": "jsonata",
+        "x": 730,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "ba8e00a6.e48ab",
         "type": "ui_group",
         "name": "gHome",
@@ -1668,6 +2434,16 @@
         "order": 1,
         "disp": false,
         "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "cc710660.0f1078",
+        "type": "ui_group",
+        "name": "setup",
+        "tab": "5dd640fc.c52c1",
+        "order": 1,
+        "disp": true,
+        "width": "6",
         "collapse": false
     },
     {
@@ -1701,14 +2477,15 @@
         "collapse": false
     },
     {
-        "id": "cc710660.0f1078",
-        "type": "ui_group",
-        "name": "setup",
-        "tab": "5dd640fc.c52c1",
-        "order": 1,
-        "disp": true,
-        "width": "6",
-        "collapse": false
+        "id": "e3679475.2b2c58",
+        "type": "server",
+        "name": "Home Assistant",
+        "legacy": false,
+        "addon": false,
+        "rejectUnauthorizedCerts": false,
+        "ha_boolean": "y|yes|true|on|home|open",
+        "connectionDelay": true,
+        "cacheJson": true
     },
     {
         "id": "171e8c97.da0913",
@@ -1725,6 +2502,15 @@
         "name": "Bilder",
         "icon": "dashboard",
         "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "5dd640fc.c52c1",
+        "type": "ui_tab",
+        "name": "Einstellungen",
+        "icon": "dashboard",
+        "order": 6,
         "disabled": false,
         "hidden": false
     },
@@ -1752,15 +2538,6 @@
         "name": "Energie",
         "icon": "dashboard",
         "order": 5,
-        "disabled": false,
-        "hidden": false
-    },
-    {
-        "id": "5dd640fc.c52c1",
-        "type": "ui_tab",
-        "name": "Einstellungen",
-        "icon": "dashboard",
-        "order": 6,
         "disabled": false,
         "hidden": false
     }
