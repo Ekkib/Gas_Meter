@@ -47,7 +47,7 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "Gaszaehler",
-        "func": "// Gaszaehler  2020-06-07\n\nvar now = new Date() ;\n\n   global.set ('gX_zeit', 0 ) ; // Heart-beat\n\n   Reed = msg.payload ;\n   global.set ('gReed', Reed )  ;\n\n   if (Reed == 1) {  \n     global.set ('gGaszaehler', (global.get('gGaszaehler') + 1)) ;\n     global.set ('gPulslaenge', \n                   Date.now() - global.get('gUp_flanke') ) ;\n     if (global.get ('gMin') > global.get ('gPulslaenge'))\n       { global.set ('gMin',   global.get ('gPulslaenge')) }\n     global.set ('gLeistung', \n       Math.trunc ( (global.get ('gMin') / \n                     global.get ('gPulslaenge') ) * 100) ) ;\n   }\n  \n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n// now.toLocaleString() \n\n  msg.payload  =   ISODateString (now)\n//      + \", \" +     (global.get(\"gGaszaehler\") / 10 ) \n      + \", \" +     Number.parseFloat\n   ((global.get('gGaszaehler')/\n     global.get('gImpulse_per_m3'))).toFixed(1) \n      + \", \" +     Reed      \n //   + \", \" +     ((Date.now()-global.get('gUp_flanke'))/1000)      \n //   + \", \" +     ((Date.now()-global.get('gDn_flanke'))/1000)      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n  \n  if ( global.get('gImpulse_per_m3') == 100 ) {\n  msg.payload  =   ISODateString (now)\n      + \", \" +     Number.parseFloat\n   ((global.get('gGaszaehler')/\n     global.get('gImpulse_per_m3'))).toFixed(2) \n      + \", \" +     Reed      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n   }\n  \n   if (Reed == 1) { global.set ('gUp_flanke', Date.now() ) ; } \n   else           { global.set ('gDn_flanke', Date.now() ) ; } \n\n   global.set ('gX_flanke', Date.now() ) ; \n   msg.topic = \"\" ;\n   \n   Tagesnr = new Date () ;\n\n   if ( Tagesnr.getDate() != global.get ('gAktTag') ) {\n      global.set ('gGas_24', global.get ('gGaszaehler') ) ;\n   }\n   \n   global.set ('gAktTag', Tagesnr.getDate() ) ;\n   \nreturn msg;",
+        "func": "// Gaszaehler  2020-06-14\n\nvar now = new Date() ;\n\n   global.set ('gX_zeit', 0 ) ; // Heart-beat\n\n   Reed = msg.payload ;\n   global.set ('gReed', Reed )  ;\n\n   if (Reed == 1) {  \n     global.set ('gGaszaehler', (global.get('gGaszaehler') + 1)) ;\n     global.set ('gPulslaenge', \n                   Date.now() - global.get('gUp_flanke') ) ;\n     if (global.get ('gMin') > global.get ('gPulslaenge'))\n       { global.set ('gMin',   global.get ('gPulslaenge')) }\n     global.set ('gLeistung', \n       Math.trunc ( (global.get ('gMin') / \n                     global.get ('gPulslaenge') ) * 100) ) ;\n   }\n  \n  function ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n// now.toLocaleString() \n\n  msg.payload  =   ISODateString (now)\n//      + \", \" +     (global.get(\"gGaszaehler\") / 10 ) \n      + \", \" +     Number.parseFloat\n   ((global.get('gGaszaehler')/\n     global.get('gImpulse_per_m3'))).toFixed(1) \n      + \", \" +     Reed      \n //   + \", \" +     ((Date.now()-global.get('gUp_flanke'))/1000)      \n //   + \", \" +     ((Date.now()-global.get('gDn_flanke'))/1000)      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n  \n  if ( global.get('gImpulse_per_m3') == 100 ) {\n  msg.payload  =   ISODateString (now)\n      + \", \" +     Number.parseFloat\n   ((global.get('gGaszaehler')/\n     global.get('gImpulse_per_m3'))).toFixed(2) \n      + \", \" +     Reed      \n      + \", \" +     Number.parseFloat\n                  ((global.get ('gPulslaenge')/1000)).toFixed(1)  \n      + \", \" +      global.get ('gLeistung') \n                ;\n   }\n  \n   if (Reed == 1) { global.set ('gUp_flanke', Date.now() ) ; } \n   else           { global.set ('gDn_flanke', Date.now() ) ; } \n\n   global.set ('gX_flanke', Date.now() ) ; \n   msg.topic = \"\" ;\n   \n   Tagesnr = new Date () ;\n\n   if ( Tagesnr.getDate() != global.get ('gAktTag') ) {\n      global.set ('gGas_24', global.get ('gGaszaehler') ) ;\n   }\n   \n   global.set ('gAktTag', Tagesnr.getDate() ) ;\n   \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -270,8 +270,8 @@
         "wires": [
             [
                 "6fb394b2.6f1d0c",
-                "918e4383.15c06",
-                "10b52604.55466a"
+                "10b52604.55466a",
+                "918e4383.15c06"
             ]
         ]
     },
@@ -321,8 +321,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 170,
-        "y": 360,
+        "x": 150,
+        "y": 340,
         "wires": [
             [
                 "66b278bb.5f9f48",
@@ -847,7 +847,7 @@
         "type": "function",
         "z": "559a98ba.60a488",
         "name": "Watchdog",
-        "func": "// Watchdog  2021-04-02\nvar now = new Date() ;\n\n  X_zeit = Date.now() - global.get ('gX_flanke') ;\n  global.set ('gX_zeit', X_zeit)  ;\n\n  Schwellenwert = 12 * 60 * 1000 ; // 12 Minuten\n  \n  global.set ('gSchwellenwert', Schwellenwert)   ;         \n  \n  if ( X_zeit > Schwellenwert) {global.set ('gLeistung', 0); }\n\n//  let options = { weekday: 'numeric', year: 'numeric', \n//    month: 'numeric', day: 'numeric' };\n\n// console.log(date.toLocaleString('de-DE', options));\n\n//   msg.payload =    now.toLocaleString () ;\n  \n//  Intl.DateTimeFormat(undefined, {\n//  year: 'numeric',\n//  month: 'numeric',\n//  day: 'numeric',\n//  hour: 'numeric',\n//  minute: 'numeric',\n//  second: 'numeric'\n//  }).format(d)\n \n \n// function pad(n){return n<10 ? '0'+n : n}\n\n\n/* use a function for the exact format desired... */\nfunction ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n// var d = new Date();\n// console.log(ISODateString(d));\n\n  msg.payload = ISODateString (now) ;\n\n//  msg.payload =    now.toLocaleString () ;\n\n \n  \n  \nreturn msg;",
+        "func": "// Watchdog  2021-06-14\nvar now = new Date() ;\n\n  X_zeit = Date.now() - global.get ('gX_flanke') ;\n  global.set ('gX_zeit', X_zeit)  ;\n\n  Schwellenwert = 12 * 60 * 1000 ; // 12 Minuten\n  \n  global.set ('gSchwellenwert', Schwellenwert)   ;         \n  \n  if ( X_zeit > Schwellenwert) {global.set ('gLeistung', 0); }\n\n//  let options = { weekday: 'numeric', year: 'numeric', \n//    month: 'numeric', day: 'numeric' };\n\n// console.log(date.toLocaleString('de-DE', options));\n\n//   msg.payload =    now.toLocaleString () ;\n  \n//  Intl.DateTimeFormat(undefined, {\n//  year: 'numeric',\n//  month: 'numeric',\n//  day: 'numeric',\n//  hour: 'numeric',\n//  minute: 'numeric',\n//  second: 'numeric'\n//  }).format(d)\n \n// function pad(n){return n<10 ? '0'+n : n}\n\n/* use a function for the exact format desired... */\nfunction ISODateString(d){\n    function pad(n){return n<10 ? '0'+n : n}\n    return d.getFullYear()+'-'\n    + pad(d.getMonth()+1) +'-'\n    + pad(d.getDate())    +' '\n    + pad(d.getHours())   +':'\n    + pad(d.getMinutes()) +':'\n    + pad(d.getSeconds())\n}\n\n// var d = new Date();\n// console.log(ISODateString(d));\n\n  msg.payload = ISODateString (now) ;\n\n//  msg.payload =    now.toLocaleString () ;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2289,7 +2289,7 @@
         "width": 0,
         "height": 0,
         "name": "",
-        "label": "Gas_Meter Version : 2021-06-13",
+        "label": "Gas_Meter Version : 2021-06-18",
         "format": "{{msg.payload}}",
         "layout": "row-spread",
         "x": 470,
@@ -2494,6 +2494,53 @@
         "y": 460,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "77b903c4.e8d66c",
+        "type": "function",
+        "z": "559a98ba.60a488",
+        "name": "",
+        "func": "   global.set ('gGas_24', global.get ('gGaszaehler') ) ;\n   \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 190,
+        "y": 420,
+        "wires": [
+            [
+                "a9c4c2ab.04995"
+            ]
+        ]
+    },
+    {
+        "id": "1b6ec95e.271b87",
+        "type": "inject",
+        "z": "559a98ba.60a488",
+        "name": "00:01",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "01 00 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 380,
+        "wires": [
+            [
+                "77b903c4.e8d66c"
+            ]
         ]
     },
     {
